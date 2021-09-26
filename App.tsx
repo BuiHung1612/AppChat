@@ -1,11 +1,10 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import AppNavigator from './src/navigation/AppNavigator'
 
 const App = () => {
   return (
-    <View>
-      <Text>xin chao viet nam</Text>
-    </View>
+    <AppNavigator />
   )
 }
 
