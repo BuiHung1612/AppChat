@@ -5,6 +5,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import News from '../modules/news/News';
 import Converstation from '../modules/converstation/Converstation';
 import Profile from '../modules/profile/Profile';
+import { Image } from 'react-native';
+import Icon from '../assets'
+import Fonts from '../themes/Fonts';
 const Tab = createBottomTabNavigator();
 
 const MainNavigator = () => {
@@ -12,13 +15,27 @@ const MainNavigator = () => {
         <Tab.Navigator
             screenOptions={{
 
-                headerShown: false
+                tabBarHideOnKeyboard: true,
+                headerShown: true,
+                // tabBarShowLabel: false,
+                tabBarStyle: [
+                    {
+                        display: 'flex',
+                    },
+                    null,
+                ],
+                headerTitleStyle: {
+                    color: '#8726FE',
+                    fontFamily: Fonts.extraBold,
+                    fontSize: 30
+                },
+                headerTitleAlign: 'center',
 
             }}
         >
             <Tab.Screen name="Home" component={Home} options={({ route, navigation }) => {
                 return {
-                    title: 'Trang chủ',
+                    title: "STRANGE",
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="newspaper-outline" color={color} size={20} />
                     ),
