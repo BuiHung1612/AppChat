@@ -1,4 +1,7 @@
 export default {
     logo: require('./images/logo.png'),
-    Img_01: require('./images/Img_01.png'),
+    chat: require('./images/chat.png'),
+    phone: require('./images/phone.png'),
+    mic: require('./images/mic.png'),
+    img_user: require('./images/img_user.jpg'),
 };
