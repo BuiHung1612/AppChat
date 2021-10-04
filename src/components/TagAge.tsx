@@ -5,7 +5,10 @@ import { User } from '../shared/models/Home';
 import Colors from '../themes/Colors';
 import Fonts from '../themes/Fonts';
 
-const TagAge = (data: User) => {
+const TagAge = (data: any) => {
+    console.log('data', data);
+
+
     return (
         <View
             style={[

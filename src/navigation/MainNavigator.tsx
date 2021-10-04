@@ -8,7 +8,15 @@ import Profile from '../modules/profile/Profile';
 import { Image } from 'react-native';
 import Icon from '../assets';
 import Fonts from '../themes/Fonts';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import Suggest from '../modules/news/screens/Suggest';
+import Later from '../modules/news/screens/Later';
+import Following from '../modules/news/screens/Following';
+
+const MaterialTop = createMaterialTopTabNavigator();
 const Tab = createBottomTabNavigator();
+
+
 
 const MainNavigator = () => {
     return (
@@ -63,7 +71,8 @@ const MainNavigator = () => {
                                 color={color}
                                 size={20}
                             />
-                        )
+                        ),
+
                     };
                 }}
             />

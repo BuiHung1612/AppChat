@@ -11,7 +11,7 @@ const ListUser = Array(10).fill('').map((e, i) => ({
 
 export const PostData: any = Array(5).fill('').map((e, i) => ({
     id: `post${i}up`,
-    createUp: new Date().toDateString(),
+    createUp: new Date().toLocaleDateString(),
     subtitle: '... Không biết nói gì',
     image: i % 2 == 0 ? 'https://i.pinimg.com/564x/47/86/8a/47868ae5d1357c6a554dadc8e8ecb7f4.jpg' : 'https://i.pinimg.com/564x/f5/4c/5a/f54c5a154a34e891c919d17cc75a7d79.jpg',
     like: 999,
