@@ -18,7 +18,7 @@ const TagAge = (data: any) => {
         >
             <Ionicons
                 name={data.sex == 0 ? 'male-outline' : 'female-outline'}
-                size={14}
+                size={12}
                 color={Colors.white}
             />
             <Text style={styles.tagAgeText}>{data.age}</Text>
@@ -31,17 +31,17 @@ export default TagAge;
 const styles = StyleSheet.create({
     tagAgeView: {
         marginLeft: 10,
-        height: 18,
+        height: 16,
         alignItems: 'center',
         paddingHorizontal: 4,
         justifyContent: 'space-evenly',
         backgroundColor: '#FF6BA5',
         flexDirection: 'row',
         borderRadius: 10,
-        width: 40
+        width: 34
     },
     tagAgeText: {
-        fontSize: 12,
+        fontSize: 10,
         fontFamily: Fonts.regular,
         color: Colors.white
     }

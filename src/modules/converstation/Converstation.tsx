@@ -13,6 +13,7 @@ import Colors from '../../themes/Colors';
 import Fonts from '../../themes/Fonts';
 import Metrics from '../../themes/Metrics';
 import { ListConverstations } from './ListConverstations';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Converstation = ({ navigation }: any) => {
     useLayoutEffect(() => {
@@ -77,7 +78,7 @@ const Converstation = ({ navigation }: any) => {
                         />
                     )}
                 </View>
-                <View style={{ marginLeft: 20, width: '86%' }}>
+                <View style={{ marginLeft: 10, width: '86%' }}>
                     <Text style={styles.titleStyle}>
                         {action == 'Notification' ? title : item.userName}
                     </Text>
@@ -89,7 +90,7 @@ const Converstation = ({ navigation }: any) => {
         );
     };
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
             <FlatList
                 data={ListConverstations}
                 renderItem={RenderButton}
@@ -102,7 +103,7 @@ const Converstation = ({ navigation }: any) => {
                 )}
                 showsVerticalScrollIndicator={false}
             />
-        </View>
+        </SafeAreaView>
     );
 };
 
@@ -118,12 +119,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 20,
-        paddingVertical: 10
+        paddingVertical: 6
     },
     iconView: {
-        width: 60,
-        height: 60,
-
+        width: 56,
+        height: 56,
         borderRadius: 30,
         alignItems: 'center',
         justifyContent: 'center'
@@ -131,13 +131,13 @@ const styles = StyleSheet.create({
     titleStyle: {
         color: 'black',
 
-        fontSize: 16,
+        fontSize: 14,
         fontFamily: Fonts.bold
     },
     subtitleStyle: {
-        fontSize: 14,
+        fontSize: 12,
         color: Colors.gray3,
-        marginTop: 4,
+
         width: '90%'
     }
 });

@@ -42,22 +42,22 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     userImage: {
-        width: 60,
-        height: 60,
+        width: 56,
+        height: 56,
         borderRadius: 50
     },
     itemView2: {
-        width: '80%',
+        width: '76%',
         height: 70,
         justifyContent: 'center'
     },
     userName: {
-        fontSize: 16,
+        fontSize: 14,
         fontFamily: Fonts.bold,
         lineHeight: 20
     },
     description: {
-        fontSize: 14,
+        fontSize: 12,
         fontFamily: Fonts.medium,
         color: Colors.gray3,
         lineHeight: 20

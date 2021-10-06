@@ -6,7 +6,7 @@ import Icon from '../../assets';
 import styles from './Home.styles';
 import ListUserData from './ListUserData';
 import TagAge from '../../components/TagAge';
-import { User } from '../../shared/models/Home';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Home = ({ navigation }: any) => {
     useLayoutEffect(() => {
@@ -41,7 +41,7 @@ const Home = ({ navigation }: any) => {
     const itemBoxRender = ({ item }: any) => {
         return (
             <TouchableOpacity style={styles.itemView}>
-                <View style={{ width: '20%' }}>
+                <View style={{ width: '18%' }}>
                     <Image source={Icon.img_user} style={styles.userImage} />
                 </View>
                 <View style={styles.itemView2}>
@@ -63,7 +63,7 @@ const Home = ({ navigation }: any) => {
     };
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
             <View style={styles.headerView}>
                 <HeaderBox
                     color={Colors.pink1}
@@ -89,7 +89,7 @@ const Home = ({ navigation }: any) => {
                 renderItem={itemBoxRender}
                 showsVerticalScrollIndicator={false}
             />
-        </View>
+        </SafeAreaView>
     );
 };
 

@@ -1,5 +1,6 @@
 import React from 'react'
 import { ActivityIndicator, FlatList, Image, ImageProps, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import TagAge from '../../components/TagAge';
 import { Post } from '../../shared/models/Profile';
@@ -91,9 +92,9 @@ const News = ({ navigation }: any) => {
         );
     };
     return (
-        <View style={styles.container}>
-            <FlatList data={PostData} renderItem={RenderPost} />
-        </View>
+        <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+            <FlatList data={PostData} renderItem={RenderPost} showsVerticalScrollIndicator={false} />
+        </SafeAreaView>
     )
 }
 
@@ -110,10 +111,9 @@ const styles = StyleSheet.create({
     },
     renderPostView: {
         maxWidth: '100%',
-        marginTop: 10,
         paddingHorizontal: 16,
         paddingVertical: 10,
-        marginBottom: 4,
+        marginBottom: 10,
         backgroundColor: 'white'
     },
     flexrowAndBetween: {

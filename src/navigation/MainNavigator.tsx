@@ -5,15 +5,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import News from '../modules/news/News';
 import Converstation from '../modules/converstation/Converstation';
 import Profile from '../modules/profile/Profile';
-import { Image } from 'react-native';
-import Icon from '../assets';
-import Fonts from '../themes/Fonts';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import Suggest from '../modules/news/screens/Suggest';
-import Later from '../modules/news/screens/Later';
-import Following from '../modules/news/screens/Following';
 
-const MaterialTop = createMaterialTopTabNavigator();
+import Fonts from '../themes/Fonts';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+
 const Tab = createBottomTabNavigator();
 
 
@@ -27,7 +22,13 @@ const MainNavigator = () => {
                 // tabBarShowLabel: false,
                 tabBarStyle: [
                     {
-                        display: 'flex'
+                        display: 'flex',
+                        paddingBottom: 14,
+                        shadowColor: 'transparent',
+                        height: 54,
+                        borderTopWidth: 0,
+
+
                     },
                     null
                 ],
@@ -40,7 +41,8 @@ const MainNavigator = () => {
                     fontSize: 24,
                     backgroundColor: 'transparent'
                 },
-                headerTitleAlign: 'center'
+                headerTitleAlign: 'center',
+
             }}
         >
             <Tab.Screen
@@ -51,7 +53,7 @@ const MainNavigator = () => {
                         title: 'Trang chủ',
                         tabBarIcon: ({ color, size }) => (
                             <Ionicons
-                                name="newspaper-outline"
+                                name="newspaper"
                                 color={color}
                                 size={20}
                             />
@@ -67,7 +69,7 @@ const MainNavigator = () => {
                         title: 'Bảng tin',
                         tabBarIcon: ({ color, size }) => (
                             <Ionicons
-                                name="planet-outline"
+                                name="planet"
                                 color={color}
                                 size={20}
                             />
@@ -84,7 +86,7 @@ const MainNavigator = () => {
                         title: 'Trò chuyện',
                         tabBarIcon: ({ color, size }) => (
                             <Ionicons
-                                name="chatbubbles-outline"
+                                name="chatbubbles"
                                 color={color}
                                 size={20}
                             />
@@ -105,7 +107,7 @@ const MainNavigator = () => {
                     return {
                         tabBarIcon: ({ color, size }) => (
                             <Ionicons
-                                name="leaf-outline"
+                                name="leaf"
                                 color={color}
                                 size={20}
                             />

@@ -14,6 +14,8 @@ import Icon from '../../assets';
 import { PostData } from '../home/ListUserData';
 import { SpeedDial, Image, BottomSheet, ListItem } from 'react-native-elements';
 import { Post } from '../../shared/models/Profile';
+import Report from '../../components/Report';
+import { SafeAreaView } from 'react-native-safe-area-context';
 interface UserProfile {
     title: string;
 }
@@ -38,7 +40,7 @@ const Profile = () => {
 
     const RenderPost = ({ item }: Post) => {
         return (
-            <View style={{ maxWidth: '100%', marginTop: 10 }}>
+            <SafeAreaView style={{ maxWidth: '100%', marginTop: 10 }}>
                 <View
                     style={{
                         flexDirection: 'row',
@@ -100,21 +102,14 @@ const Profile = () => {
                         <Text style={{ marginLeft: 8 }}>{item.disLike}</Text>
                     </View>
                 </View>
-            </View>
+            </SafeAreaView>
         );
     };
 
     const [isVisible, setIsVisible] = useState(false);
-    const list = [
-        { title: 'List Item 1' },
-        { title: 'List Item 2' },
-        {
-            title: 'Cancel',
-            containerStyle: { backgroundColor: 'red' },
-            titleStyle: { color: 'white' },
-            onPress: () => setIsVisible(false)
-        }
-    ];
+    const onHandleClose = () => {
+        setIsVisible(false)
+    }
     const listHeader = () => {
         return (
             <View style={{ alignItems: 'center', paddingTop: 40 }}>
@@ -146,26 +141,26 @@ const Profile = () => {
         );
     };
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container} >
             {/* thanh icon trên cùng màn hình  */}
             <View style={styles.iconView}>
                 <Ionicons
                     name="radio-outline"
-                    size={26}
+                    size={20}
                     style={{ marginLeft: 15 }}
+                    color="#000000"
                 />
                 <View style={styles.viewIconRight}>
-                    <Ionicons name="gift-outline" size={26} />
+                    <Ionicons name="gift-outline" size={20} color="#000000" />
                     <View style={styles.viewVIP}>
                         <Ionicons
                             name="duplicate-outline"
-                            size={26}
+                            size={20}
                             color="#F6D78A"
                         />
                         <Text style={styles.textVIP}>VIP</Text>
                     </View>
-
-                    <Ionicons name="settings-outline" size={26} />
+                    <Ionicons name="settings-outline" size={20} color="#000000" />
                 </View>
             </View>
             {/* ảnh nhân vật + tên */}
@@ -195,22 +190,9 @@ const Profile = () => {
                     onPress={() => console.log('Delete Something')}
                 />
             </SpeedDial>
-            <BottomSheet
-                isVisible={isVisible}
-                modalProps={{ animationType: 'fade' }}
-                containerStyle={{ backgroundColor: 'rgba(0.5, 0.25, 0, 0.2)' }}
-            >
-                <TouchableOpacity style={styles.reportButton}>
-                    <Text style={styles.reportLabel}>Báo cáo</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.cancelButton}
-                    onPress={() => setIsVisible(false)}
-                >
-                    <Text style={styles.cancelLabel}>Huỷ</Text>
-                </TouchableOpacity>
-            </BottomSheet>
-        </View>
+            <Report isVisible={isVisible} button1="Ghim vào hồ sơ của bạn" button2="Xoá" cancelLabel="Huỷ" setVisible={onHandleClose} />
+
+        </SafeAreaView>
     );
 };
 
@@ -236,8 +218,8 @@ const styles = StyleSheet.create({
     },
     viewVIP: {
         flexDirection: 'row',
-        height: 36,
-        width: 80,
+        height: 30,
+        width: 74,
         borderRadius: 20,
         alignItems: 'center',
         justifyContent: 'space-evenly',
@@ -299,32 +281,5 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center'
     },
-    reportButton: {
-        marginHorizontal: 20,
-        borderRadius: 10,
-        height: 50,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#8726FE',
-        marginVertical: 12
-    },
-    reportLabel: {
-        fontFamily: Fonts.bold,
-        fontSize: 16,
-        color: Colors.white
-    },
-    cancelButton: {
-        marginHorizontal: 20,
-        borderRadius: 10,
-        height: 50,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'white',
-        marginBottom: 20
-    },
-    cancelLabel: {
-        fontSize: 16,
-        color: Colors.black1,
-        fontFamily: Fonts.medium
-    }
+
 });
