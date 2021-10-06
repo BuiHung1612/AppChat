@@ -6,13 +6,16 @@ import Fonts from '../themes/Fonts'
 
 interface ReportButton {
     isVisible: boolean,
-    button1: string,
-    button2: string,
-    cancelLabel: string,
+    button1?: string,
+    button2?: string,
+    button3?: string,
+    cancelLabel?: string,
+    fourButton?: boolean,
     setVisible: (isVisible: boolean) => void,
 }
 
-const Report = ({ isVisible, button1, button2, cancelLabel, setVisible }: ReportButton) => {
+const Report = ({ isVisible, button1, button2, button3, fourButton, cancelLabel, setVisible }: ReportButton) => {
+    console.log(button2);
 
 
     return (
@@ -22,13 +25,24 @@ const Report = ({ isVisible, button1, button2, cancelLabel, setVisible }: Report
             modalProps={{ animationType: 'none', }}
             containerStyle={{ backgroundColor: 'rgba(0.5, 0.25, 0, 0.2)' }}
         >
-            <TouchableOpacity onPress={() => setVisible(false)} style={{ backgroundColor: 'red', flex: 1 }}>
+            <TouchableOpacity onPress={() => setVisible(false)} style={{ flex: 1 }}>
                 <TouchableOpacity style={styles.reportButton}>
                     <Text style={styles.reportLabel}>{button1}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.reportButton, { backgroundColor: '#FF68A3' }]}>
-                    <Text style={styles.reportLabel}>{button2}</Text>
-                </TouchableOpacity>
+                {
+                    button2 !== undefined ? (
+                        <TouchableOpacity style={[styles.reportButton, fourButton == false ? { backgroundColor: '#FF68A3' } : null]}>
+                            <Text style={styles.reportLabel}>{button2}</Text>
+                        </TouchableOpacity>
+                    ) : null
+                }
+                {
+                    button3 !== undefined ? (
+                        <TouchableOpacity style={[styles.reportButton]}>
+                            <Text style={styles.reportLabel}>{button3}</Text>
+                        </TouchableOpacity>
+                    ) : null
+                }
                 <TouchableOpacity
                     style={styles.cancelButton}
                     onPress={() => setVisible(false)}

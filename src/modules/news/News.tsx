@@ -1,10 +1,9 @@
-import React from 'react'
-import { ActivityIndicator, FlatList, Image, ImageProps, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useState } from 'react'
+import { FlatList, Image, ImageProps, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Report from '../../components/Report';
 import TagAge from '../../components/TagAge';
-import { Post } from '../../shared/models/Profile';
-import Colors from '../../themes/Colors';
 import Fonts from '../../themes/Fonts';
 import { PostData } from './NewsData';
 
@@ -25,7 +24,10 @@ interface News {
 }
 
 const News = ({ navigation }: any) => {
-
+    const [showReport, setShowReport] = useState(false)
+    const onHandleClose = () => {
+        setShowReport(false)
+    }
     const RenderPost = ({ item }: News) => {
         return (
             <View style={styles.renderPostView}>
@@ -49,7 +51,7 @@ const News = ({ navigation }: any) => {
                             </Text>
                         </View>
                     </View>
-                    <TouchableOpacity >
+                    <TouchableOpacity onPress={() => setShowReport(true)} >
                         <Ionicons name="ellipsis-horizontal" size={20} />
                     </TouchableOpacity>
                 </View>
@@ -94,6 +96,8 @@ const News = ({ navigation }: any) => {
     return (
         <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
             <FlatList data={PostData} renderItem={RenderPost} showsVerticalScrollIndicator={false} />
+            <Report isVisible={showReport} button1="Không thích" button3="Báo Cáo" cancelLabel="Huỷ" setVisible={onHandleClose} />
+
         </SafeAreaView>
     )
 }

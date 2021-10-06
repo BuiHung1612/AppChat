@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Colors from '../../themes/Colors';
@@ -7,8 +7,11 @@ import styles from './Home.styles';
 import ListUserData from './ListUserData';
 import TagAge from '../../components/TagAge';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import ModalProfile from '../../components/UserProfileModal';
 
 const Home = ({ navigation }: any) => {
+
+    const [showModal, setShowModal] = useState(false)
     useLayoutEffect(() => {
         navigation.setOptions({
             headerLeft: () => (
@@ -40,7 +43,7 @@ const Home = ({ navigation }: any) => {
 
     const itemBoxRender = ({ item }: any) => {
         return (
-            <TouchableOpacity style={styles.itemView}>
+            <TouchableOpacity style={styles.itemView} onPress={() => setShowModal(true)}>
                 <View style={{ width: '18%' }}>
                     <Image source={Icon.img_user} style={styles.userImage} />
                 </View>
@@ -61,6 +64,9 @@ const Home = ({ navigation }: any) => {
             </TouchableOpacity>
         );
     };
+    const onCloseModel = () => {
+        setShowModal(false)
+    }
 
     return (
         <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
@@ -89,6 +95,7 @@ const Home = ({ navigation }: any) => {
                 renderItem={itemBoxRender}
                 showsVerticalScrollIndicator={false}
             />
+            <ModalProfile showModal={showModal} onCloseModel={onCloseModel} />
         </SafeAreaView>
     );
 };

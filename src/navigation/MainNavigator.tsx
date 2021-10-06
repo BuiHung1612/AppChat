@@ -5,13 +5,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import News from '../modules/news/News';
 import Converstation from '../modules/converstation/Converstation';
 import Profile from '../modules/profile/Profile';
-
 import Fonts from '../themes/Fonts';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 const Tab = createBottomTabNavigator();
-
-
 
 const MainNavigator = () => {
     return (
@@ -23,9 +19,8 @@ const MainNavigator = () => {
                 tabBarStyle: [
                     {
                         display: 'flex',
-                        paddingBottom: 14,
+                        paddingBottom: 8,
                         shadowColor: 'transparent',
-                        height: 54,
                         borderTopWidth: 0,
 
 
@@ -101,10 +96,11 @@ const MainNavigator = () => {
                 }}
             />
             <Tab.Screen
-                name="Me"
+                name="MyProfile"
                 component={Profile}
                 options={({ route, navigation }) => {
                     return {
+                        title: 'Cá nhân',
                         tabBarIcon: ({ color, size }) => (
                             <Ionicons
                                 name="leaf"
