@@ -44,14 +44,14 @@ const styles = StyleSheet.create({
     userName: {
         fontFamily: Fonts.bold,
         lineHeight: 20,
-        fontSize: 16,
+        fontSize: 18,
         marginTop: 14
     },
     description: {
         width: '74%',
-        fontFamily: Fonts.medium,
+        fontFamily: Fonts.light,
         lineHeight: 20,
-        fontSize: 14,
+        fontSize: 13,
         marginTop: 14,
         textAlign: 'center'
     },
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     textChip: {
         color: Colors.black1,
         fontFamily: Fonts.bold,
-        fontSize: 14
+        fontSize: 12
     },
     followView: {
         alignItems: 'center',
@@ -79,13 +79,13 @@ const styles = StyleSheet.create({
     },
     followNumber: {
         fontWeight: 'bold',
-        fontSize: 14,
+        fontSize: 12,
         lineHeight: 22
     },
     followTitle: {
         fontFamily: Fonts.medium,
         color: Colors.gray3,
-        fontSize: 14,
+        fontSize: 13,
         lineHeight: 20
     },
     flexrowAndAlign: {

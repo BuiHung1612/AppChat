@@ -1,30 +1,38 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     FlatList,
     Text,
     View
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
-import { PostData } from '../home/ListUserData';
 import { SpeedDial } from 'react-native-elements';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from './Profile.styles'
 import ListHeader from '../../components/ListHeader';
 import RenderPost from '../../components/RenderPost';
-
+import ListUser from '../home/ListUserData'
+import { useDispatch, useSelector } from 'react-redux';
+import { getProfile } from './ProfileAction';
 
 const Profile = () => {
     const [open, setOpen] = useState(false);
 
     const [isVisible, setIsVisible] = useState(false);
+    const dispatch = useDispatch()
+    const ProfileData = useSelector((store: any) => store.ProfileReducer.dataProfile)
+    console.log('dataProfile', ProfileData);
+
     const onHandleClose = () => {
         setIsVisible(false)
     }
+    useEffect(() => {
+        dispatch(getProfile())
+    }, [])
 
     const RenderHeader = () => {
-        return <ListHeader />
+        return <ListHeader data={ProfileData[0]} />
+
     }
 
     // cần định nghĩa lại type của item
@@ -57,7 +65,7 @@ const Profile = () => {
             {/* ảnh nhân vật + tên */}
             <View style={{ flex: 0.9, paddingHorizontal: 20 }}>
                 <FlatList
-                    data={PostData}
+                    data={ListUser[0].posts}
                     renderItem={RenderItemPost}
                     ListHeaderComponent={RenderHeader}
                     showsVerticalScrollIndicator={false}
