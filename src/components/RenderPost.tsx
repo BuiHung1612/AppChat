@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
 import { ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Post } from '../shared/models/Profile';
+import { Post, UserProfile } from '../shared/models/Profile';
 import Fonts from '../themes/Fonts';
 import styles from '../modules/profile/Profile.styles'
 import Report from './Report'
 interface Props {
-    typeReport?: string
+    typeReport?: string,
+    item: Post
 }
-const RenderPost = ({ item, typeReport }: Post & Props) => {
+const RenderPost = ({ item, typeReport }: Props) => {
     const [showReport, setShowReport] = useState(false)
     const onCancelReport = () => {
         setShowReport(false)

@@ -2,7 +2,11 @@ import React from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import Icon from '../assets';
 import styles from '../modules/profile/Profile.styles'
-const ListHeader = () => {
+import { UserProfile } from '../shared/models/Profile';
+interface UserProps {
+    data: UserProfile
+}
+const ListHeader = ({ data }: UserProps) => {
 
     const Chip = ({ title }: any) => {
         return (
@@ -26,10 +30,9 @@ const ListHeader = () => {
                 source={Icon.img_user}
                 style={{ width: 110, height: 110, borderRadius: 60 }}
             />
-            <Text style={styles.userName}>Bùi Anh Tuấn</Text>
+            <Text style={styles.userName}>{data.userName}</Text>
             <Text style={styles.description}>
-                Chính phủ Việt Nam, Thủ tướng Chính phủ Việt Nam, Cổng Thông
-                tin điện tử Chính phủ,
+                {data.description}
             </Text>
             <View style={{ marginTop: 10 }}>
                 <View style={styles.chipView}>
@@ -42,9 +45,9 @@ const ListHeader = () => {
                 </View>
             </View>
             <View style={{ flexDirection: 'row' }}>
-                <Follow number={0} title="Đang theo dõi" />
-                <Follow number={999} title="Người theo dõi" />
-                <Follow number={999} title="Đã ghé thăm" />
+                <Follow number={data.following} title="Đang theo dõi" />
+                <Follow number={data.followers} title="Người theo dõi" />
+                <Follow number={data.visited} title="Đã ghé thăm" />
             </View>
         </View>
     );

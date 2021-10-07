@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
         height: 50,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#8726FE',
+        backgroundColor: '#A867FF',
         marginBottom: 10,
     },
     reportLabel: {

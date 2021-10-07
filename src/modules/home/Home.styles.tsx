@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     userName: {
-        fontSize: 14,
+        fontSize: 15,
         fontFamily: Fonts.bold,
         lineHeight: 20
     },

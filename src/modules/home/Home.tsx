@@ -1,5 +1,5 @@
-import React, { useLayoutEffect, useState } from 'react';
-import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
+import { ActivityIndicator, FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Colors from '../../themes/Colors';
 import Icon from '../../assets';
@@ -8,10 +8,21 @@ import ListUserData from './ListUserData';
 import TagAge from '../../components/TagAge';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ModalProfile from '../../components/UserProfileModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProfile } from '../profile/ProfileAction';
 
 const Home = ({ navigation }: any) => {
 
+    const dispatch = useDispatch()
     const [showModal, setShowModal] = useState(false)
+    const [selectUser, setSelectUser] = useState()
+    const ListUser = useSelector((store: any) => store.ProfileReducer.dataProfile)
+    console.log('ListUser', ListUser);
+
+    useEffect(() => {
+        dispatch(getProfile())
+    }, [])
+
     useLayoutEffect(() => {
         navigation.setOptions({
             headerLeft: () => (
@@ -43,7 +54,10 @@ const Home = ({ navigation }: any) => {
 
     const itemBoxRender = ({ item }: any) => {
         return (
-            <TouchableOpacity style={styles.itemView} onPress={() => setShowModal(true)}>
+            <TouchableOpacity style={styles.itemView} onPress={() => {
+                setSelectUser(item)
+                setShowModal(true)
+            }}>
                 <View style={{ width: '18%' }}>
                     <Image source={Icon.img_user} style={styles.userImage} />
                 </View>
@@ -53,10 +67,7 @@ const Home = ({ navigation }: any) => {
                         <TagAge
                             sex={item.sex}
                             age={item.age}
-                            id={''}
-                            userName={''}
-                            userImage={''}
-                            subtitle={''}
+
                         />
                     </View>
                     <Text style={styles.description}>Anh ấy là người mới</Text>
@@ -68,7 +79,7 @@ const Home = ({ navigation }: any) => {
         setShowModal(false)
     }
 
-    return (
+    return ListUser !== null ? (
         <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
             <View style={styles.headerView}>
                 <HeaderBox
@@ -91,13 +102,19 @@ const Home = ({ navigation }: any) => {
                 />
             </View>
             <FlatList
-                data={ListUserData}
+                data={ListUser}
                 renderItem={itemBoxRender}
                 showsVerticalScrollIndicator={false}
             />
-            <ModalProfile showModal={showModal} onCloseModel={onCloseModel} />
+            <ModalProfile showModal={showModal} onCloseModel={onCloseModel} data={selectUser} />
         </SafeAreaView>
-    );
+    ) : (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <ActivityIndicator size={30} color="blue" />
+        </View>
+    )
+
+
 };
 
 export default Home;

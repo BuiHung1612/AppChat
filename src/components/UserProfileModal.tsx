@@ -11,20 +11,23 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Fonts from '../themes/Fonts';
 import Icon from '../assets';
-import { PostData } from '../modules/home/ListUserData';
 import { SpeedDial, Image, BottomSheet, ListItem } from 'react-native-elements';
 import { Post } from '../shared/models/Profile';
 import Report from '../components/Report';
 import styles from '../modules/profile/Profile.styles'
 import RenderPost from './RenderPost';
 import ListHeader from './ListHeader';
+import ListUser from '../modules/home/ListUserData'
 interface UserProfile {
     title?: string;
     showModal?: boolean,
     onCloseModel: (isClose: boolean) => void,
+    data: UserProfile
 }
 
-const ModalProfile = ({ showModal, onCloseModel }: UserProfile) => {
+const ModalProfile = ({ showModal, onCloseModel, data }: UserProfile) => {
+    console.log('data user', data);
+
 
     const [isVisible, setIsVisible] = useState(false);
 
@@ -32,7 +35,7 @@ const ModalProfile = ({ showModal, onCloseModel }: UserProfile) => {
         setIsVisible(false)
     }
     const RenderHeader = () => {
-        return <ListHeader />
+        return <ListHeader data={data} />
     }
     const onPressBack = () => {
         onCloseModel(true)
@@ -64,7 +67,7 @@ const ModalProfile = ({ showModal, onCloseModel }: UserProfile) => {
             {/* ảnh nhân vật + tên */}
             <View style={{ flex: 0.9, paddingHorizontal: 20 }}>
                 <FlatList
-                    data={PostData}
+                    data={ListUser[0].posts}
                     renderItem={RenderItemPost}
                     ListHeaderComponent={RenderHeader}
                     showsVerticalScrollIndicator={false}

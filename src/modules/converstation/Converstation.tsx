@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     titleStyle: {
         color: 'black',
 
-        fontSize: 14,
+        fontSize: 15,
         fontFamily: Fonts.bold
     },
     subtitleStyle: {
