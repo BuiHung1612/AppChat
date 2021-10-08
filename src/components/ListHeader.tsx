@@ -24,7 +24,7 @@ const ListHeader = ({ data }: UserProps) => {
             </View>
         );
     };
-    return (
+    return data !== undefined ? (
         <View style={{ alignItems: 'center', paddingTop: 40 }}>
             <Image
                 source={Icon.img_user}
@@ -50,7 +50,7 @@ const ListHeader = ({ data }: UserProps) => {
                 <Follow number={data.visited} title="Đã ghé thăm" />
             </View>
         </View>
-    );
+    ) : null
 };
 
 export default ListHeader

@@ -15,13 +15,15 @@ import ListUser from '../home/ListUserData'
 import { useDispatch, useSelector } from 'react-redux';
 import { getProfile } from './ProfileAction';
 
-const Profile = () => {
+const Profile = ({ navigation, route }: any) => {
+
     const [open, setOpen] = useState(false);
 
     const [isVisible, setIsVisible] = useState(false);
     const dispatch = useDispatch()
     const ProfileData = useSelector((store: any) => store.ProfileReducer.dataProfile)
-    console.log('dataProfile', ProfileData);
+    // console.log('dataProfile', ProfileData);
+
 
     const onHandleClose = () => {
         setIsVisible(false)
@@ -44,10 +46,10 @@ const Profile = () => {
             {/* thanh icon trên cùng màn hình  */}
             <View style={styles.iconView}>
                 <Ionicons
-                    name="radio-outline"
+                    name="location"
                     size={20}
-                    style={{ marginLeft: 15 }}
-                    color="#000000"
+                    style={{ marginLeft: 14 }}
+                    color="#0B3861"
                 />
                 <View style={styles.viewIconRight}>
                     <Ionicons name="gift-outline" size={20} color="#000000" />

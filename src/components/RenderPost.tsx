@@ -5,15 +5,23 @@ import { Post, UserProfile } from '../shared/models/Profile';
 import Fonts from '../themes/Fonts';
 import styles from '../modules/profile/Profile.styles'
 import Report from './Report'
+import { useNavigation } from '@react-navigation/native';
+import TagAge from './TagAge';
 interface Props {
     typeReport?: string,
-    item: Post
+    item: Post,
 }
 const RenderPost = ({ item, typeReport }: Props) => {
     const [showReport, setShowReport] = useState(false)
+    const [showComment, setShowComment] = useState(false)
+    const [like, setLike] = useState(false)
+    const navigation: any = useNavigation()
+
+
     const onCancelReport = () => {
         setShowReport(false)
     }
+
     return (
         <View style={{ maxWidth: '100%', marginTop: 10 }}>
             <View
@@ -24,7 +32,27 @@ const RenderPost = ({ item, typeReport }: Props) => {
                     alignItems: 'center'
                 }}
             >
-                <Text
+                <View style={[styles.flexrowAndAlign]}>
+                    {
+                        typeReport !== "news" ? null : (<TouchableOpacity >
+                            <Image source={item?.userImage} style={styles.userImage} />
+                        </TouchableOpacity>)
+                    }
+                    <View style={{ marginLeft: 10 }}>
+                        {typeReport !== "news" ? null : (<View style={{ flexDirection: 'row', }}>
+                            <Text>{item?.userName}</Text>
+                            <TagAge sex={item?.sex}
+                                age={item?.age} />
+                        </View>)
+                        }
+                        <Text
+                            style={styles.createUpText}
+                        >
+                            {item.createUp}
+                        </Text>
+                    </View>
+                </View>
+                {/* <Text
                     style={{
                         color: '#DDDDDD',
                         fontFamily: Fonts.bold,
@@ -35,7 +63,8 @@ const RenderPost = ({ item, typeReport }: Props) => {
                 </Text>
                 <TouchableOpacity onPress={() => setShowReport(true)} >
                     <Ionicons name="ellipsis-horizontal" size={20} />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
+
             </View>
             <Text style={{ paddingVertical: 10 }}>{item.subtitle}</Text>
             {item.image !== null ? (
@@ -51,18 +80,18 @@ const RenderPost = ({ item, typeReport }: Props) => {
                 ]}
             >
                 <View style={styles.flexrowAndAlign}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => setLike(!like)}>
                         <Ionicons
                             name="heart"
                             size={24}
-                            color={'#DFDFDF'}
+                            color={like ? 'red' : '#DFDFDF'}
                         />
                     </TouchableOpacity>
                     <Text style={{ marginLeft: 6 }}>{item.like}</Text>
                 </View>
 
                 <View style={[styles.flexrowAndAlign, { marginLeft: 24 }]}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('Comment', { DataComment: item })} >
                         <Ionicons
                             name="chatbubble"
                             size={24}
@@ -87,6 +116,8 @@ const RenderPost = ({ item, typeReport }: Props) => {
                             setVisible={onCancelReport} />)
 
             }
+
+            {/* <Comment isVisible={showComment} onCloseComment={onCloseComment} data={item} dataUser={dataUser} /> */}
         </View>
     );
 };

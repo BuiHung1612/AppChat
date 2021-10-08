@@ -8,11 +8,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.white,
-        paddingHorizontal: 15
+
     },
     headerView: {
         flexDirection: 'row',
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
+        paddingHorizontal: 12,
     },
     imageLogo: {
         width: 100,

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { FlatList, Image, ImageProps, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import RenderPost from '../../components/RenderPost';
 import Report from '../../components/Report';
 import TagAge from '../../components/TagAge';
 import Fonts from '../../themes/Fonts';
@@ -28,74 +29,12 @@ const News = ({ navigation }: any) => {
     const onHandleClose = () => {
         setShowReport(false)
     }
-    const RenderPost = ({ item }: News) => {
-        return (
-            <View style={styles.renderPostView}>
-                <View
-                    style={styles.flexrowAndBetween}
-                >
-                    <View style={[styles.flexrowAndAlign]}>
-                        <TouchableOpacity onPress={() => navigation.navigate('Me', { UserId: item.idUser })}>
-                            <Image source={item.userImage} style={styles.userImage} />
-                        </TouchableOpacity>
-                        <View style={{ marginLeft: 10 }}>
-                            <View style={{ flexDirection: 'row', }}>
-                                <Text>{item.userName}</Text>
-                                <TagAge sex={item.sex}
-                                    age={item.age} />
-                            </View>
-                            <Text
-                                style={styles.createUpText}
-                            >
-                                {item.createUp}
-                            </Text>
-                        </View>
-                    </View>
-                    <TouchableOpacity onPress={() => setShowReport(true)} >
-                        <Ionicons name="ellipsis-horizontal" size={20} />
-                    </TouchableOpacity>
-                </View>
-                <Text style={{ paddingVertical: 10 }}>{item.subtitle}</Text>
-                {item.image !== null ? (
-                    <Image
-                        source={{ uri: item.image }}
-                        style={styles.imagePost}
-                    />
-                ) : null}
-                <View
-                    style={[
-                        styles.flexrowAndAlign,
-                        { marginTop: 26, marginBottom: 10 }
-                    ]}
-                >
-                    <View style={styles.flexrowAndAlign}>
-                        <TouchableOpacity>
-                            <Ionicons
-                                name="heart"
-                                size={24}
-                                color={'#DFDFDF'}
-                            />
-                        </TouchableOpacity>
-                        <Text style={{ marginLeft: 6 }}>{item.like}</Text>
-                    </View>
-
-                    <View style={[styles.flexrowAndAlign, { marginLeft: 24 }]}>
-                        <TouchableOpacity>
-                            <Ionicons
-                                name="chatbubble"
-                                size={24}
-                                color={'#DFDFDF'}
-                            />
-                        </TouchableOpacity>
-                        <Text style={{ marginLeft: 8 }}>{item.disLike}</Text>
-                    </View>
-                </View>
-            </View>
-        );
-    };
+    const RenderItemPost = ({ item }: any) => {
+        return <RenderPost item={item} typeReport={'news'} />
+    }
     return (
         <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-            <FlatList data={PostData} renderItem={RenderPost} showsVerticalScrollIndicator={false} />
+            <FlatList data={PostData} renderItem={RenderItemPost} showsVerticalScrollIndicator={false} />
             <Report isVisible={showReport} button1="Không thích" button3="Báo Cáo" cancelLabel="Huỷ" setVisible={onHandleClose} />
 
         </SafeAreaView>
@@ -107,7 +46,8 @@ export default News
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#EDEDED'
+        backgroundColor: 'white',
+        paddingHorizontal: 20,
     },
     flexrowAndAlign: {
         flexDirection: 'row',

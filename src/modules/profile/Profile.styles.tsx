@@ -96,7 +96,18 @@ const styles = StyleSheet.create({
         height: 300,
         maxWidth: '100%',
         borderRadius: 10
-    }
+    },
+    createUpText: {
+        color: '#DDDDDD',
+        fontFamily: Fonts.bold,
+        marginTop: 4
+
+    },
+    userImage: {
+        width: 60,
+        height: 60,
+        borderRadius: 30
+    },
 
 });
 

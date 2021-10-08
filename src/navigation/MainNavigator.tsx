@@ -6,10 +6,35 @@ import News from '../modules/news/News';
 import Converstation from '../modules/converstation/Converstation';
 import Profile from '../modules/profile/Profile';
 import Fonts from '../themes/Fonts';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import CommentScreen from '../modules/comment/CommentScreen';
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator()
+const MainStack = () => {
+    return (
+        <Stack.Navigator initialRouteName="MainButtonTabs">
+            <Stack.Screen
+                name="MainButtonTabs"
+                component={MainButtonTabs}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="Comment"
+                component={CommentScreen}
+                options={{
+                    headerShown: true,
+                    headerTitleAlign: 'center',
+                    title: 'Bình Luận',
+                    headerShadowVisible: false
+                }}
+            />
 
-const MainNavigator = () => {
+        </Stack.Navigator>
+    )
+}
+
+const MainButtonTabs = () => {
     return (
         <Tab.Navigator
             screenOptions={{
@@ -116,4 +141,4 @@ const MainNavigator = () => {
     );
 };
 
-export default MainNavigator;
+export default MainStack;

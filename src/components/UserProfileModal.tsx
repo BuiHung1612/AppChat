@@ -22,7 +22,7 @@ interface UserProfile {
     title?: string;
     showModal?: boolean,
     onCloseModel: (isClose: boolean) => void,
-    data: UserProfile
+    data?: UserProfile
 }
 
 const ModalProfile = ({ showModal, onCloseModel, data }: UserProfile) => {
@@ -30,6 +30,7 @@ const ModalProfile = ({ showModal, onCloseModel, data }: UserProfile) => {
 
 
     const [isVisible, setIsVisible] = useState(false);
+
 
     const onHandleClose = () => {
         setIsVisible(false)
@@ -49,7 +50,7 @@ const ModalProfile = ({ showModal, onCloseModel, data }: UserProfile) => {
         <Modal style={styles.container} visible={showModal} animationType="slide" >
             {/* thanh icon trên cùng màn hình  */}
             <View style={styles.iconView}>
-                <TouchableOpacity onPress={() => onPressBack()} style={{ marginLeft: 15, width: 40, height: 40, justifyContent: 'center', alignItems: 'center' }}>
+                <TouchableOpacity onPress={() => onPressBack()} style={{ marginLeft: 10, width: 40, height: 40, justifyContent: 'center', alignItems: 'center' }}>
                     <Ionicons
                         name="arrow-back-outline"
                         size={20}
@@ -74,7 +75,6 @@ const ModalProfile = ({ showModal, onCloseModel, data }: UserProfile) => {
                 />
             </View>
             <Report isVisible={isVisible} button1="Chỉnh sửa biệt danh" button2="Chặn" button3="Báo Cáo" cancelLabel="Huỷ" fourButton={true} setVisible={onHandleClose} />
-
         </Modal>
     );
 };

@@ -17,7 +17,6 @@ const Home = ({ navigation }: any) => {
     const [showModal, setShowModal] = useState(false)
     const [selectUser, setSelectUser] = useState()
     const ListUser = useSelector((store: any) => store.ProfileReducer.dataProfile)
-    console.log('ListUser', ListUser);
 
     useEffect(() => {
         dispatch(getProfile())
@@ -53,12 +52,15 @@ const Home = ({ navigation }: any) => {
     };
 
     const itemBoxRender = ({ item }: any) => {
+        console.log(item);
+
         return (
             <TouchableOpacity style={styles.itemView} onPress={() => {
                 setSelectUser(item)
                 setShowModal(true)
+                // navigation.navigate('MyProfile', { userData: item, type: 'strange' })
             }}>
-                <View style={{ width: '18%' }}>
+                <View style={{ marginRight: 14 }}>
                     <Image source={Icon.img_user} style={styles.userImage} />
                 </View>
                 <View style={styles.itemView2}>
@@ -101,11 +103,13 @@ const Home = ({ navigation }: any) => {
                     subtitle="Chat nhóm"
                 />
             </View>
-            <FlatList
-                data={ListUser}
-                renderItem={itemBoxRender}
-                showsVerticalScrollIndicator={false}
-            />
+            <View style={{ marginHorizontal: 16 }}>
+                <FlatList
+                    data={ListUser}
+                    renderItem={itemBoxRender}
+                    showsVerticalScrollIndicator={false}
+                />
+            </View>
             <ModalProfile showModal={showModal} onCloseModel={onCloseModel} data={selectUser} />
         </SafeAreaView>
     ) : (
