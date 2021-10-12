@@ -8,6 +8,7 @@ import Profile from '../modules/profile/Profile';
 import Fonts from '../themes/Fonts';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CommentScreen from '../modules/comment/CommentScreen';
+import ConvetstationDetail from '../modules/converstation/ConvetstationDetail';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator()
@@ -23,10 +24,18 @@ const MainStack = () => {
                 name="Comment"
                 component={CommentScreen}
                 options={{
-                    headerShown: true,
                     headerTitleAlign: 'center',
                     title: 'Bình Luận',
                     headerShadowVisible: false
+                }}
+            />
+            <Stack.Screen
+                name="ConvetstationDetail"
+                component={ConvetstationDetail}
+                options={{
+                    headerTitleAlign: 'center',
+                    title: 'User Name',
+                    headerShadowVisible: false,
                 }}
             />
 

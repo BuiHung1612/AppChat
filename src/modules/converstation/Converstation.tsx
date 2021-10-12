@@ -53,7 +53,8 @@ const Converstation = ({ navigation }: any) => {
 
     const RenderButton = ({ item, action, title, subtitle }: any) => {
         return (
-            <TouchableOpacity style={styles.buttonView}>
+            <TouchableOpacity style={styles.buttonView} onPress={() => navigation.navigate(action !== 'Notification' ? 'ConvetstationDetail' : undefined, { Id_Room: item })
+            }>
                 <View
                     style={[
                         styles.iconView,
@@ -86,7 +87,7 @@ const Converstation = ({ navigation }: any) => {
                         {action == 'Notification' ? subtitle : item.subtitle}
                     </Text>
                 </View>
-            </TouchableOpacity>
+            </TouchableOpacity >
         );
     };
     return (
