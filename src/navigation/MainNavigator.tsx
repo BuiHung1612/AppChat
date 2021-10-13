@@ -9,12 +9,16 @@ import Fonts from '../themes/Fonts';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CommentScreen from '../modules/comment/CommentScreen';
 import ConvetstationDetail from '../modules/converstation/ConvetstationDetail';
+import LoginScreen from '../modules/auth/Login';
+import AddFriend from '../modules/converstation/AddFriendScreen';
+import Register from '../modules/auth/Register';
+import ModalProfile from '../components/UserProfileModal';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator()
 const MainStack = () => {
     return (
-        <Stack.Navigator initialRouteName="MainButtonTabs">
+        <Stack.Navigator initialRouteName="Login">
             <Stack.Screen
                 name="MainButtonTabs"
                 component={MainButtonTabs}
@@ -38,7 +42,44 @@ const MainStack = () => {
                     headerShadowVisible: false,
                 }}
             />
+            <Stack.Screen
+                name="Login"
+                component={LoginScreen}
+                options={{
+                    headerTitleAlign: 'center',
+                    title: 'Đăng nhập',
+                    headerShadowVisible: false,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="Register"
+                component={Register}
+                options={{
+                    headerTitleAlign: 'center',
+                    title: 'Đăng Ký',
+                    headerShadowVisible: false,
+                }}
+            />
+            <Stack.Screen
+                name="ListUser"
+                component={AddFriend}
+                options={{
+                    headerTitleAlign: 'center',
+                    title: 'Danh sách',
+                    headerShadowVisible: false,
+                }}
+            />
+            <Stack.Screen
+                name="UserProfile"
+                component={ModalProfile}
+                options={{
+                    headerTitleAlign: 'center',
 
+                    headerShadowVisible: false,
+                    headerShown: false
+                }}
+            />
         </Stack.Navigator>
     )
 }

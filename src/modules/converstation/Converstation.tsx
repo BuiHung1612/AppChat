@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import {
     FlatList,
     Image,
@@ -14,7 +14,9 @@ import Fonts from '../../themes/Fonts';
 import Metrics from '../../themes/Metrics';
 import { ListConverstations } from './ListConverstations';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import firestore from '@react-native-firebase/firestore'
+import auth from '@react-native-firebase/auth'
+import { Avatar } from 'react-native-elements';
 const Converstation = ({ navigation }: any) => {
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -40,6 +42,7 @@ const Converstation = ({ navigation }: any) => {
                         justifyContent: 'center',
                         marginRight: 10
                     }}
+                    onPress={() => navigation.navigate('ListUser')}
                 >
                     <Ionicons
                         name="person-add-outline"
@@ -50,6 +53,25 @@ const Converstation = ({ navigation }: any) => {
             )
         });
     }, [navigation]);
+
+    const [listUser, setListUser] = useState([])
+
+
+    useEffect(() => {
+        firestore().collection('Friends')
+            .doc(auth().currentUser?.uid)
+            .collection('List')
+            .get()
+            .then(querySnapshot => {
+                const newData: any = querySnapshot.docs.map(doc => ({
+                    ...doc.data(),
+                }));
+                setListUser(newData);
+            })
+            .catch(error => {
+                console.log('Error getting documents: ', error);
+            });
+    }, [])
 
     const RenderButton = ({ item, action, title, subtitle }: any) => {
         return (
@@ -90,11 +112,45 @@ const Converstation = ({ navigation }: any) => {
             </TouchableOpacity >
         );
     };
+    const example = {
+        title: 'Big pimple',
+        size: 65,
+        badgeProps: {
+            size: 'pimpleHuge',
+            borderWidth: 0,
+            backgroundColor: '#51CA31',
+        },
+        badgePosition: 'BOTTOM_RIGHT',
+    };
     return (
         <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
             <FlatList
-                data={ListConverstations}
+                data={listUser}
                 renderItem={RenderButton}
+                renderItem={({ item }: any) => {
+                    return auth().currentUser?.uid === item?.idSender ? (
+                        <TouchableOpacity style={styles.horizontalBtn}>
+                            <Image style={{ width: 60, height: 60, borderRadius: 40 }} source={{ uri: item?.img }} />
+                            <View style={styles.viewBtnRight}>
+                                <Text >
+                                    {item?.userName}
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                    ) : (
+                        <TouchableOpacity >
+                            <Image style={{ width: 60, height: 60, borderRadius: 40 }} source={{ uri: item?.img }} />
+
+                            <View style={styles.viewBtnRight}>
+                                <Text >
+                                    {item?.friendName}
+                                </Text>
+                            </View>
+
+                            {console.log('boxchar', item?.idBoxChat)}
+                        </TouchableOpacity>
+                    );
+                }}
                 ListHeaderComponent={() => (
                     <RenderButton
                         action="Notification"
@@ -122,6 +178,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingVertical: 6
     },
+    viewBtnRight: {
+        marginLeft: 15,
+    },
     iconView: {
         width: 56,
         height: 56,
@@ -140,5 +199,6 @@ const styles = StyleSheet.create({
         color: Colors.gray3,
 
         width: '90%'
-    }
+    },
+    horizontalBtn: { height: 90, marginLeft: 15 }
 });

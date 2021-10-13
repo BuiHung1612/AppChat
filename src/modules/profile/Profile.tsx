@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
     FlatList,
     Text,
+    TouchableOpacity,
     View
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -14,7 +15,7 @@ import RenderPost from '../../components/RenderPost';
 import ListUser from '../home/ListUserData'
 import { useDispatch, useSelector } from 'react-redux';
 import { getProfile } from './ProfileAction';
-
+import auth from '@react-native-firebase/auth'
 const Profile = ({ navigation, route }: any) => {
 
     const [open, setOpen] = useState(false);
@@ -22,7 +23,8 @@ const Profile = ({ navigation, route }: any) => {
     const [isVisible, setIsVisible] = useState(false);
     const dispatch = useDispatch()
     const ProfileData = useSelector((store: any) => store.ProfileReducer.dataProfile)
-    // console.log('dataProfile', ProfileData);
+    const UserData = useSelector((store: any) => store.AuthReducer.dataUser)
+    console.log('UserData', UserData);
 
 
     const onHandleClose = () => {
@@ -33,7 +35,7 @@ const Profile = ({ navigation, route }: any) => {
     }, [])
 
     const RenderHeader = () => {
-        return <ListHeader data={ProfileData[0]} />
+        return <ListHeader data={UserData} />
 
     }
 
@@ -41,8 +43,22 @@ const Profile = ({ navigation, route }: any) => {
     const RenderItemPost = ({ item }: any) => {
         return <RenderPost item={item} typeReport={'Profile'} />
     }
+    const SignOut = () => {
+        // navigation.replace('Friend');
+        auth()
+            .signOut()
+            .then(() => {
+                // Sign-out successful.
+                navigation.replace('Login');
+            })
+            .catch(error => {
+                // An error happened.
+            });
+    };
+
     return (
         <SafeAreaView style={styles.container} >
+
             {/* thanh icon trên cùng màn hình  */}
             <View style={styles.iconView}>
                 <Ionicons
@@ -86,9 +102,9 @@ const Profile = ({ navigation, route }: any) => {
                     onPress={() => console.log('Add Something')}
                 />
                 <SpeedDial.Action
-                    icon={{ name: 'delete', color: '#fff' }}
-                    title="Delete"
-                    onPress={() => console.log('Delete Something')}
+                    icon={{ name: 'log-out-outline', type: "ionicon", color: '#fff' }}
+                    title="Đăng xuất"
+                    onPress={() => SignOut()}
                 />
             </SpeedDial>
 

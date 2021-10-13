@@ -25,7 +25,8 @@ interface UserProfile {
     data?: UserProfile
 }
 
-const ModalProfile = ({ showModal, onCloseModel, data }: UserProfile) => {
+const ModalProfile = ({ navigation, route }: any) => {
+    const { data } = route.params
     console.log('data user', data);
 
 
@@ -38,19 +39,17 @@ const ModalProfile = ({ showModal, onCloseModel, data }: UserProfile) => {
     const RenderHeader = () => {
         return <ListHeader data={data} />
     }
-    const onPressBack = () => {
-        onCloseModel(true)
-    }
+
     // cần định nghĩa lại type của item
     const RenderItemPost = ({ item }: any) => {
         return <RenderPost item={item} />
     }
 
     return (
-        <Modal style={styles.container} visible={showModal} animationType="slide" >
+        <View style={styles.container} >
             {/* thanh icon trên cùng màn hình  */}
             <View style={styles.iconView}>
-                <TouchableOpacity onPress={() => onPressBack()} style={{ marginLeft: 10, width: 40, height: 40, justifyContent: 'center', alignItems: 'center' }}>
+                <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 10, width: 40, height: 40, justifyContent: 'center', alignItems: 'center' }}>
                     <Ionicons
                         name="arrow-back-outline"
                         size={20}
@@ -75,7 +74,7 @@ const ModalProfile = ({ showModal, onCloseModel, data }: UserProfile) => {
                 />
             </View>
             <Report isVisible={isVisible} button1="Chỉnh sửa biệt danh" button2="Chặn" button3="Báo Cáo" cancelLabel="Huỷ" fourButton={true} setVisible={onHandleClose} />
-        </Modal>
+        </View>
     );
 };
 

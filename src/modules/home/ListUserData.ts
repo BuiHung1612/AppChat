@@ -2,6 +2,7 @@ import { Post } from "../../shared/models/Profile"
 
 const ListUser = Array(10).fill('').map((e, i) => ({
     id: `User${i}`,
+    userImage: i % 2 == 0 ? 'https://i.pinimg.com/236x/57/0e/c8/570ec82942b82f6dacb8da223630c6b1.jpg' : 'https://i.pinimg.com/236x/ad/11/fa/ad11fae1cebbcfe930341a9f67907ced.jpg',
     userName: i % 2 == 0 ? 'Bùi Văn Hùng' : 'Bùi Anh Tuấn',
     subtitle: 'Anh ấy là người mới',
     chips: ["Thích ăn đồ ngọt", "Nhút nhát", "Nghiện internet", "Thích ở nhà"],

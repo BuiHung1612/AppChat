@@ -27,12 +27,12 @@ const ListHeader = ({ data }: UserProps) => {
     return data !== undefined ? (
         <View style={{ alignItems: 'center', paddingTop: 40 }}>
             <Image
-                source={Icon.img_user}
+                source={{ uri: data?.photoURL ?? data.userImage }}
                 style={{ width: 110, height: 110, borderRadius: 60 }}
             />
-            <Text style={styles.userName}>{data.userName}</Text>
+            <Text style={styles.userName}>{data.userName ?? data?.displayName}</Text>
             <Text style={styles.description}>
-                {data.description}
+                {data.description ?? data?.email}
             </Text>
             <View style={{ marginTop: 10 }}>
                 <View style={styles.chipView}>

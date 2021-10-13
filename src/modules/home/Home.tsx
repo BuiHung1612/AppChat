@@ -51,32 +51,27 @@ const Home = ({ navigation }: any) => {
         );
     };
 
-    const itemBoxRender = ({ item }: any) => {
-        console.log(item);
+    const itemBoxRender = ({ item }: any) =>
+        <TouchableOpacity style={styles.itemView} onPress={() => {
+            navigation.navigate('UserProfile', { data: item })
+        }}>
+            <View style={{ marginRight: 14 }}>
+                <Image source={Icon.img_user} style={styles.userImage} />
+            </View>
+            <View style={styles.itemView2}>
+                <View style={{ flexDirection: 'row' }}>
+                    <Text style={styles.userName}>{item.userName}</Text>
+                    <TagAge
+                        sex={item.sex}
+                        age={item.age}
 
-        return (
-            <TouchableOpacity style={styles.itemView} onPress={() => {
-                setSelectUser(item)
-                setShowModal(true)
-                // navigation.navigate('MyProfile', { userData: item, type: 'strange' })
-            }}>
-                <View style={{ marginRight: 14 }}>
-                    <Image source={Icon.img_user} style={styles.userImage} />
+                    />
                 </View>
-                <View style={styles.itemView2}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Text style={styles.userName}>{item.userName}</Text>
-                        <TagAge
-                            sex={item.sex}
-                            age={item.age}
+                <Text style={styles.description}>Anh ấy là người mới</Text>
+            </View>
+        </TouchableOpacity>
 
-                        />
-                    </View>
-                    <Text style={styles.description}>Anh ấy là người mới</Text>
-                </View>
-            </TouchableOpacity>
-        );
-    };
+
     const onCloseModel = () => {
         setShowModal(false)
     }
@@ -110,7 +105,6 @@ const Home = ({ navigation }: any) => {
                     showsVerticalScrollIndicator={false}
                 />
             </View>
-            <ModalProfile showModal={showModal} onCloseModel={onCloseModel} data={selectUser} />
         </SafeAreaView>
     ) : (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

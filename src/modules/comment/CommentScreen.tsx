@@ -7,7 +7,7 @@ import Fonts from '../../themes/Fonts'
 
 const CommentScreen = ({ navigation, route }: any) => {
     const { DataComment } = route.params
-    console.log('dataComment', DataComment);
+    // console.log('dataComment', DataComment);
 
     const ListHeader = () => {
         return <View style={styles.renderPostView}>
