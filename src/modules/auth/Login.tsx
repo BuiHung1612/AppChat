@@ -1,67 +1,3 @@
-// import React, { useState, useEffect } from 'react';
-// import { StyleSheet, View } from 'react-native';
-// import { Input, Button } from 'react-native-elements';
-// import auth from '@react-native-firebase/auth'
-// const LoginScreen = ({ navigation }: any) => {
-//     const [email, setEmail] = useState('hung@gmail.com');
-//     const [password, setPassword] = useState('123456');
-//     const SignIn = () => {
-//         auth()
-//             .signInWithEmailAndPassword(email, password)
-
-//             .catch(error => {
-//                 console.log(error.message);
-
-
-//             });
-//     };
-//     useEffect(() => {
-//         const unsubcribe = auth().onAuthStateChanged(function (user) {
-//             if (user) {
-//                 // User is signed in.
-//                 navigation.replace('MainButtonTabs');
-//             } else {
-//                 // No user is signed in.
-//             }
-//         });
-//         return unsubcribe;
-//     }, []);
-//     return (
-//         <View style={styles.container}>
-//             <Input
-//                 placeholder="Enter your Email"
-//                 leftIcon={{ type: 'material', name: 'email' }}
-//                 value={email}
-//                 onChangeText={text => setEmail(text)}
-//             />
-//             <Input
-//                 placeholder="Enter your password"
-//                 leftIcon={{ type: 'material', name: 'lock' }}
-//                 value={password}
-//                 onChangeText={text => setPassword(text)}
-//                 secureTextEntry
-//             />
-//             <Button title="SignIn" onPress={SignIn} style={{ marginBottom: 10 }} />
-//             <Button
-//                 title="Register"
-//                 onPress={() => navigation.navigate('Register')}
-//             />
-
-//         </View>
-//     );
-// };
-
-// export default LoginScreen;
-
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//     },
-//     btnSignIn: {
-//         marginTop: 10,
-//     },
-// });
-
 
 
 import React, { useState, useEffect } from 'react';
@@ -75,58 +11,22 @@ import {
     KeyboardAvoidingView,
     Alert,
 } from 'react-native';
-import { Input, Button, SocialIcon } from 'react-native-elements';
-import auth from '@react-native-firebase/auth'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Dimensions } from 'react-native';
 import { useDispatch } from 'react-redux';
 import Icon from '../../assets'
 import Fonts from '../../themes/Fonts';
-import { ACTION_TYPES } from './AuthActions';
+
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const Login = ({ navigation }: any) => {
     const [email, setEmail] = useState('hung@gmail.com');
     const [password, setPassword] = useState('123456');
-    const dispatch = useDispatch()
-    const SignIn = () => {
-        auth()
-            .signInWithEmailAndPassword(email, password)
-
-            .catch(error => {
-                console.log(error.message);
-
-
-            });
-    };
-    useEffect(() => {
-        const unsubcribe = auth().onAuthStateChanged(function (user) {
-            if (user) {
-                dispatch({
-                    type: ACTION_TYPES.USER_LOGIN,
-                    payload: {
-                        dataUser: user
-                    },
-                });
-                // User is signed in.
-                navigation.replace('MainButtonTabs');
-            } else {
-                // no user login
-            }
-        });
-        return unsubcribe;
-    }, []);
 
     return (
         <KeyboardAvoidingView style={styles.container}>
-            <View style={styles.logoView}>
-                <Image
-                    source={Icon.logo}
-                    style={styles.logoImage}
-                    resizeMode="contain"
-                />
-            </View>
+
             <View style={styles.textInputView}>
                 <Ionicons name="mail-outline" size={22} color="#000" />
                 <TextInput
@@ -149,7 +49,9 @@ const Login = ({ navigation }: any) => {
                 />
             </View>
             <View style={styles.viewBtn}>
-                <TouchableOpacity style={[styles.btn, { backgroundColor: email !== '' && password !== '' ? '#2884FF' : '#bdbdbd' }]} onPress={() => SignIn()}>
+                <TouchableOpacity style={[styles.btn, { backgroundColor: email !== '' && password !== '' ? '#2884FF' : '#bdbdbd' }]}
+                    onPress={() => navigation.navigate('MainButtonTabs')}
+                >
                     <Text style={{ color: email !== '' && password !== '' ? 'white' : 'black', fontFamily: Fonts.bold }}>Tiếp tục</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.loginWithPassWord} onPress={() => navigation.navigate('Register')}>
@@ -205,8 +107,9 @@ export default Login;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: '#FAFAFA',
         alignItems: 'center',
+        justifyContent: 'flex-end'
     },
     header: {
         flex: 0.08,
@@ -243,9 +146,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-around',
         marginVertical: 6,
-        borderWidth: 0.7,
+        borderWidth: 1,
         borderRadius: 6,
-        borderColor: '#d8d8d8',
+        borderColor: '#bdbdbd',
         paddingHorizontal: 16
     },
     TextInput: {
@@ -255,12 +158,11 @@ const styles = StyleSheet.create({
         paddingLeft: 15,
     },
     viewBtn: {
-        flex: 0.17,
         alignItems: 'center',
     },
     viewBtn1: {
-        flex: 0.4,
         alignItems: 'center',
+
     },
     btn: {
         marginTop: 15,
@@ -305,6 +207,7 @@ const styles = StyleSheet.create({
         height: windowHeight * 0.06,
         backgroundColor: '#2884FF',
         alignItems: 'center',
+        justifyContent: 'center'
     },
     textBtn: {
         fontWeight: 'bold',
@@ -314,14 +217,14 @@ const styles = StyleSheet.create({
         width: 30,
         height: 30,
         borderRadius: 20,
-        marginLeft: 10,
-        marginRight: 56,
+        position: 'absolute',
+        left: 10
+
     },
     footer: {
         paddingHorizontal: 40,
         paddingVertical: 20,
         marginVertical: 50,
-        flex: 0.5,
         justifyContent: 'flex-end'
 
     },

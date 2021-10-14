@@ -15,7 +15,6 @@ import RenderPost from '../../components/RenderPost';
 import ListUser from '../home/ListUserData'
 import { useDispatch, useSelector } from 'react-redux';
 import { getProfile } from './ProfileAction';
-import auth from '@react-native-firebase/auth'
 const Profile = ({ navigation, route }: any) => {
 
     const [open, setOpen] = useState(false);
@@ -23,9 +22,6 @@ const Profile = ({ navigation, route }: any) => {
     const [isVisible, setIsVisible] = useState(false);
     const dispatch = useDispatch()
     const ProfileData = useSelector((store: any) => store.ProfileReducer.dataProfile)
-    const UserData = useSelector((store: any) => store.AuthReducer.dataUser)
-    console.log('UserData', UserData);
-
 
     const onHandleClose = () => {
         setIsVisible(false)
@@ -35,7 +31,7 @@ const Profile = ({ navigation, route }: any) => {
     }, [])
 
     const RenderHeader = () => {
-        return <ListHeader data={UserData} />
+        return <ListHeader data={ProfileData[0]} />
 
     }
 
@@ -43,18 +39,10 @@ const Profile = ({ navigation, route }: any) => {
     const RenderItemPost = ({ item }: any) => {
         return <RenderPost item={item} typeReport={'Profile'} />
     }
-    const SignOut = () => {
-        // navigation.replace('Friend');
-        auth()
-            .signOut()
-            .then(() => {
-                // Sign-out successful.
-                navigation.replace('Login');
-            })
-            .catch(error => {
-                // An error happened.
-            });
-    };
+
+    const LogOut = () => {
+        navigation.navigate('Login')
+    }
 
     return (
         <SafeAreaView style={styles.container} >
@@ -104,7 +92,7 @@ const Profile = ({ navigation, route }: any) => {
                 <SpeedDial.Action
                     icon={{ name: 'log-out-outline', type: "ionicon", color: '#fff' }}
                     title="Đăng xuất"
-                    onPress={() => SignOut()}
+                    onPress={() => LogOut()}
                 />
             </SpeedDial>
 

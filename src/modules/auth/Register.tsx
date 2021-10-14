@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Dimensions, Alert, Image, ImageBackground } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import auth from '@react-native-firebase/auth'
+
 import firebase from '@react-native-firebase/app'
-import firestore from '@react-native-firebase/firestore'
+
 import Icon from '../../assets'
 import Fonts from '../../themes/Fonts';
 const windowWidth = Dimensions.get('window').width;
@@ -14,48 +14,11 @@ const Register = () => {
     const [name, setName] = useState('');
     const [ImgUrl, setImgUrl] = useState('');
     const [password, setPassword] = useState('');
-    const registerBtn = () => {
-        auth()
-            .createUserWithEmailAndPassword(email, password)
-            .then(userCredential => {
-                //Signed In
-                firestore().collection('users').add({
-                    id: auth().currentUser?.uid,
-                    displayName: name,
-                    ImgUrl: ImgUrl
-                        ? ImgUrl
-                        : 'https://i.pinimg.com/236x/30/e3/d6/30e3d6ca4641b6bda5ee69cda07b89a5.jpg',
-                });
-                var user = userCredential.user;
-                user
-                    .updateProfile({
-                        displayName: name,
-                        photoURL: ImgUrl
-                            ? ImgUrl
-                            : 'https://i.pinimg.com/236x/30/e3/d6/30e3d6ca4641b6bda5ee69cda07b89a5.jpg',
-                    })
-                    .then(function () {
-                        // Update successful.
-                    })
-                    .catch(function (error) {
-                        // An error happened.
-                    });
-            })
-            .catch(err => {
-                var errorMessage = err.message;
-                Alert.alert(errorMessage);
-            });
-    };
+
     return (
         <View style={styles.container}>
 
-            <View style={styles.logoView}>
-                <Image
-                    source={Icon.logo}
-                    style={styles.logoImage}
-                    resizeMode="contain"
-                />
-            </View>
+
             <View style={styles.textInputView}>
                 <Ionicons name="person" size={22} color="#0B3B39" />
                 <TextInput
@@ -97,7 +60,7 @@ const Register = () => {
                 />
             </View>
 
-            <TouchableOpacity style={[styles.btn, { backgroundColor: '#2884FF' }]} onPress={() => registerBtn()}>
+            <TouchableOpacity style={[styles.btn, { backgroundColor: '#2884FF' }]}>
                 <Text style={{ color: 'white', fontFamily: Fonts.bold }}>Tiếp tục</Text>
             </TouchableOpacity>
             {/* <Button title="Register" onPress={registerBtn} /> */}
@@ -111,7 +74,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: 'white'
+        justifyContent: 'center',
+        backgroundColor: '#FAFAFA'
 
     },
     btnSignIn: {

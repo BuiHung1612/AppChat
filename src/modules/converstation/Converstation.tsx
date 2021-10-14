@@ -14,8 +14,7 @@ import Fonts from '../../themes/Fonts';
 import Metrics from '../../themes/Metrics';
 import { ListConverstations } from './ListConverstations';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import firestore from '@react-native-firebase/firestore'
-import auth from '@react-native-firebase/auth'
+
 import { Avatar } from 'react-native-elements';
 const Converstation = ({ navigation }: any) => {
     useLayoutEffect(() => {
@@ -57,21 +56,7 @@ const Converstation = ({ navigation }: any) => {
     const [listUser, setListUser] = useState([])
 
 
-    useEffect(() => {
-        firestore().collection('Friends')
-            .doc(auth().currentUser?.uid)
-            .collection('List')
-            .get()
-            .then(querySnapshot => {
-                const newData: any = querySnapshot.docs.map(doc => ({
-                    ...doc.data(),
-                }));
-                setListUser(newData);
-            })
-            .catch(error => {
-                console.log('Error getting documents: ', error);
-            });
-    }, [])
+
 
     const RenderButton = ({ item, action, title, subtitle }: any) => {
         return (
@@ -125,32 +110,8 @@ const Converstation = ({ navigation }: any) => {
     return (
         <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
             <FlatList
-                data={listUser}
+                data={ListConverstations}
                 renderItem={RenderButton}
-                renderItem={({ item }: any) => {
-                    return auth().currentUser?.uid === item?.idSender ? (
-                        <TouchableOpacity style={styles.horizontalBtn}>
-                            <Image style={{ width: 60, height: 60, borderRadius: 40 }} source={{ uri: item?.img }} />
-                            <View style={styles.viewBtnRight}>
-                                <Text >
-                                    {item?.userName}
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
-                    ) : (
-                        <TouchableOpacity >
-                            <Image style={{ width: 60, height: 60, borderRadius: 40 }} source={{ uri: item?.img }} />
-
-                            <View style={styles.viewBtnRight}>
-                                <Text >
-                                    {item?.friendName}
-                                </Text>
-                            </View>
-
-                            {console.log('boxchar', item?.idBoxChat)}
-                        </TouchableOpacity>
-                    );
-                }}
                 ListHeaderComponent={() => (
                     <RenderButton
                         action="Notification"
