@@ -8,12 +8,14 @@ const initialState: {
     dataUser: null,
     canLoadMore: boolean,
     errorMessage: null | string
+    token: null | string,
 } = {
     isInitializing: true,
     isLoading: false,
     dataUser: null,
     errorMessage: null,
-    canLoadMore: false
+    canLoadMore: false,
+    token: null,
 };
 
 export type AuthState = Readonly<typeof initialState>;
@@ -30,7 +32,23 @@ const AuthRecuder = (
 
             return {
                 ...state,
-                dataUser: action.payload.dataUser,
+                token: action.payload.token,
+                errorMessage: null,
+            };
+        case ACTION_TYPES.USER_LOGOUT:
+
+            return {
+                ...state,
+                token: null,
+                errorMessage: null,
+
+            };
+
+        case ACTION_TYPES.SET_ERROR_MESSAGE:
+
+            return {
+                ...state,
+                errorMessage: action.payload.errorMessage,
 
             };
 

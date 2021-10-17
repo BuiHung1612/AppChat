@@ -8,33 +8,58 @@ import {
     Image,
     TextInput,
     TouchableOpacity,
-    KeyboardAvoidingView,
-    Alert,
+    Keyboard,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Dimensions } from 'react-native';
-import { useDispatch } from 'react-redux';
-import Icon from '../../assets'
+import { useDispatch, useSelector } from 'react-redux';
 import Fonts from '../../themes/Fonts';
-
+import { onSignIn } from './AuthActions';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const Login = ({ navigation }: any) => {
-    const [email, setEmail] = useState('hung@gmail.com');
-    const [password, setPassword] = useState('123456');
+    const [userName, setUserName] = useState('admin');
+    const [password, setPassword] = useState('admin');
+    const dispatch = useDispatch()
+    const errorMessage = useSelector(store => store.AuthReducer.errorMessage)
+    const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener(
+            'keyboardDidShow',
+            () => {
+                setKeyboardVisible(true);
+            }
+        );
+        const keyboardDidHideListener = Keyboard.addListener(
+            'keyboardDidHide',
+            () => {
+                setKeyboardVisible(false);
+            }
+        );
+
+        return () => {
+            keyboardDidHideListener.remove();
+            keyboardDidShowListener.remove();
+        };
+    }, []);
+    const SignIn = () => {
+        dispatch(onSignIn(userName, password))
+    }
 
     return (
-        <KeyboardAvoidingView style={styles.container}>
+        <View style={styles.container}  >
 
             <View style={styles.textInputView}>
                 <Ionicons name="mail-outline" size={22} color="#000" />
                 <TextInput
                     placeholder="Nhập email"
                     keyboardType="email-address"
+                    placeholderTextColor="gray"
                     style={styles.TextInput}
-                    value={email}
-                    onChangeText={text => setEmail(text)}
+                    value={userName}
+                    onChangeText={text => setUserName(text)}
                 />
             </View>
             <View style={styles.textInputView}>
@@ -43,16 +68,20 @@ const Login = ({ navigation }: any) => {
                     placeholder="Nhập mật khẩu"
                     keyboardType="numeric"
                     style={styles.TextInput}
+                    placeholderTextColor="gray"
                     value={password}
                     onChangeText={text => setPassword(text)}
                     secureTextEntry
                 />
             </View>
+            {
+                errorMessage !== null ? <Text style={{ color: 'red' }}>*{errorMessage}</Text> : null
+            }
             <View style={styles.viewBtn}>
-                <TouchableOpacity style={[styles.btn, { backgroundColor: email !== '' && password !== '' ? '#2884FF' : '#bdbdbd' }]}
-                    onPress={() => navigation.navigate('MainButtonTabs')}
+                <TouchableOpacity style={[styles.btn, { backgroundColor: userName !== '' && password !== '' ? '#2884FF' : '#bdbdbd' }]}
+                    onPress={() => SignIn()}
                 >
-                    <Text style={{ color: email !== '' && password !== '' ? 'white' : 'black', fontFamily: Fonts.bold }}>Tiếp tục</Text>
+                    <Text style={{ color: userName !== '' && password !== '' ? 'white' : 'black', fontFamily: Fonts.bold }}>Tiếp tục</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.loginWithPassWord} onPress={() => navigation.navigate('Register')}>
                     <Text style={styles.textLogin}>Chưa có tài khoản ?</Text>
@@ -87,18 +116,23 @@ const Login = ({ navigation }: any) => {
                     <Text style={styles.textBtn}>Tiếp tục với Facebook</Text>
                 </TouchableOpacity>
             </View>
-            <View style={styles.footer}>
-                <Text style={styles.textFooter}>
-                    Chúng tôi không sử dụng thông tin của bạn với bất kỳ mục đích nào.
-                </Text>
-                <Text style={styles.textFooter}>
-                    Bằng cách đăng nhập hoặc đăng ký bạn đồng ý với{' '}
-                    <Text style={styles.termsOfService}>
-                        Chính sách quy định của STRANGE
-                    </Text>
-                </Text>
-            </View>
-        </KeyboardAvoidingView>
+            {
+                isKeyboardVisible === true ? null : (
+                    <View style={styles.footer}>
+                        <Text style={styles.textFooter}>
+                            Chúng tôi không sử dụng thông tin của bạn với bất kỳ mục đích nào.
+                        </Text>
+                        <Text style={styles.textFooter}>
+                            Bằng cách đăng nhập hoặc đăng ký bạn đồng ý với{' '}
+                            <Text style={styles.termsOfService}>
+                                Chính sách quy định của STRANGE
+                            </Text>
+                        </Text>
+                    </View>
+                )
+            }
+
+        </View>
     );
 };
 
@@ -109,38 +143,9 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#FAFAFA',
         alignItems: 'center',
-        justifyContent: 'flex-end'
+        justifyContent: 'center'
     },
-    header: {
-        flex: 0.08,
-        flexDirection: 'row',
-        backgroundColor: 'red',
-    },
-    logoView: {
 
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#d8d8d8',
-        borderRadius: 80,
-        padding: 16,
-        marginVertical: 60,
-        marginBottom: 40,
-
-        borderColor: 'black',
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 6,
-        },
-        shadowOpacity: 0.37,
-        shadowRadius: 7.49,
-
-        elevation: 12,
-    },
-    logoImage: {
-        height: 80,
-        width: 80,
-    },
     textInputView: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -149,7 +154,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 6,
         borderColor: '#bdbdbd',
-        paddingHorizontal: 16
+        paddingHorizontal: 16,
+        marginHorizontal: 30,
     },
     TextInput: {
         width: windowWidth * 0.7,
@@ -225,7 +231,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 40,
         paddingVertical: 20,
         marginVertical: 50,
-        justifyContent: 'flex-end'
+        position: 'absolute',
+        bottom: 10
+
 
     },
     textFooter: {

@@ -15,6 +15,7 @@ import RenderPost from '../../components/RenderPost';
 import ListUser from '../home/ListUserData'
 import { useDispatch, useSelector } from 'react-redux';
 import { getProfile } from './ProfileAction';
+import { onSignOut } from '../auth/AuthActions';
 const Profile = ({ navigation, route }: any) => {
 
     const [open, setOpen] = useState(false);
@@ -41,8 +42,10 @@ const Profile = ({ navigation, route }: any) => {
     }
 
     const LogOut = () => {
-        navigation.navigate('Login')
+        dispatch(onSignOut())
+        // navigation.navigate('Login')
     }
+
 
     return (
         <SafeAreaView style={styles.container} >

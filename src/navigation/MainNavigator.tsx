@@ -42,25 +42,7 @@ const MainStack = () => {
                     headerShadowVisible: false,
                 }}
             />
-            <Stack.Screen
-                name="Login"
-                component={LoginScreen}
-                options={{
-                    headerTitleAlign: 'center',
-                    title: 'Đăng nhập',
-                    headerShadowVisible: false,
-                    headerShown: false
-                }}
-            />
-            <Stack.Screen
-                name="Register"
-                component={Register}
-                options={{
-                    headerTitleAlign: 'center',
-                    title: 'Đăng Ký',
-                    headerShadowVisible: false,
-                }}
-            />
+
             <Stack.Screen
                 name="ListUser"
                 component={AddFriend}
@@ -78,6 +60,32 @@ const MainStack = () => {
 
                     headerShadowVisible: false,
                     headerShown: false
+                }}
+            />
+        </Stack.Navigator>
+    )
+}
+
+export const AuthStack = () => {
+    return (
+        <Stack.Navigator initialRouteName="Login">
+            <Stack.Screen
+                name="Login"
+                component={LoginScreen}
+                options={{
+                    headerTitleAlign: 'center',
+                    title: 'Đăng nhập',
+                    headerShadowVisible: false,
+                    headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name="Register"
+                component={Register}
+                options={{
+                    headerTitleAlign: 'center',
+                    title: 'Đăng Ký',
+                    headerShadowVisible: false,
                 }}
             />
         </Stack.Navigator>

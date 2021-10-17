@@ -24,7 +24,7 @@ const Register = () => {
                 <TextInput
                     placeholder="Nhập Tên của bạn"
                     style={styles.TextInput}
-                    placeholderTextColor="black"
+                    placeholderTextColor="gray"
                     value={name}
                     onChangeText={text => setName(text)}
                 />
@@ -35,7 +35,7 @@ const Register = () => {
                     placeholder="Nhập Email của bạn"
                     style={styles.TextInput}
                     value={email}
-                    placeholderTextColor="black"
+                    placeholderTextColor="gray"
                     onChangeText={text => setEmail(text)}
                 />
             </View>
@@ -45,7 +45,7 @@ const Register = () => {
                     placeholder="Nhập mật khẩu"
                     style={styles.TextInput}
                     value={password}
-                    placeholderTextColor="black"
+                    placeholderTextColor="gray"
                     onChangeText={text => setPassword(text)}
                 />
             </View>
@@ -53,7 +53,7 @@ const Register = () => {
                 <Ionicons name="image" size={22} color="#2E2EFE" />
                 <TextInput
                     placeholder="Nhập image url của ban"
-                    placeholderTextColor="black"
+                    placeholderTextColor="gray"
                     style={styles.TextInput}
                     value={ImgUrl}
                     onChangeText={text => setImgUrl(text)}
