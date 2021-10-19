@@ -37,6 +37,21 @@ router.post('/login', function (req, res, next) {
   })
 })
 
+router.post('/register', function (req, res, next) {
+  let userName = req.body.userName
+  let email = req.body.email
+  let passWord = req.body.passWord
+  console.log(userName, passWord, email);
+  sql.createUser(userName, passWord, email).then((data) => {
+    if (data == 'CREATE_SUCCESS') {
+      res.send({ isError: false, message: data })
+    }
+    else {
+      res.json({ isError: true, token: data, message: data })
+    }
+  })
+})
+
 const verifyToken = (req, res, next) => {
   const bearerHeader = req.headers['authorization'];
   if (typeof bearerHeader !== 'undefined') {
