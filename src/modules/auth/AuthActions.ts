@@ -3,11 +3,12 @@ import { Dispatch } from "redux";
 import DevConfig from "../../config/Enviroment";
 
 export const ACTION_TYPES = {
-    USER_LOGIN: 'USER_LOGIN',
-    USER_LOGOUT: 'USER_LOGOUT',
-    SET_IS_LOADING: 'profile/SET_IS_LOADING',
-    SET_PROFILE: 'SET_PROFILE',
-    SET_ERROR_MESSAGE: 'profile/SET_ERROR_MESSAGE',
+    USER_LOGIN: 'auth/USER_LOGIN',
+    USER_LOGOUT: 'auth/USER_LOGOUT',
+    SET_IS_LOADING: 'auth/SET_IS_LOADING',
+    SET_STATUS: 'auth/STATUS',
+    SET_PROFILE: 'auth/SET_PROFILE',
+    SET_ERROR_MESSAGE: 'auth/SET_ERROR_MESSAGE',
 };
 
 export const onSignIn = (username: any, password: any) => async (dispatch: Dispatch) => {
@@ -36,10 +37,65 @@ export const onSignIn = (username: any, password: any) => async (dispatch: Dispa
     })
 
 }
+
+export const createUser = (username: any, password: any, email: any) => async (dispatch: Dispatch) => {
+    console.log(username, password, email);
+
+    axios.post(`${DevConfig}/users/register`, {
+        userName: username,
+        passWord: password,
+        email: email
+
+    }).then((res: AxiosResponse<any>) => {
+        console.log('statuss', res.data.message);
+        dispatch({
+            type: ACTION_TYPES.SET_STATUS,
+            payload: {
+                status: res.data.message
+            },
+        });
+
+
+    })
+}
 export const onSignOut = () => async (dispatch: Dispatch) => {
     dispatch({
         type: ACTION_TYPES.USER_LOGOUT,
     });
+}
+
+export const setStatus = () => async (dispatch: Dispatch) => {
+    dispatch({
+        type: ACTION_TYPES.SET_STATUS,
+        payload: {
+            status: null
+        }
+    });
+}
+export const getProfileUser = (token: any) => async (dispatch: Dispatch) => {
+    console.log('token', token);
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token.token}`
+    }
+    axios.post(`${DevConfig}/users/profile`, {}, { headers: headers }
+    ).then((res: AxiosResponse<any>) => {
+        dispatch({
+            type: ACTION_TYPES.SET_PROFILE,
+            payload: {
+                profile: res.data.user
+            },
+        });
+
+
+    })
+    // dispatch({
+    //     type: ACTION_TYPES.SET_STATUS,
+    //     payload: {
+    //         status: null
+    //     }
+    // });
 }
 
 

@@ -15,7 +15,7 @@ export interface Post {
 
 export interface UserProfile {
     id: string,
-    userName: string,
+    user_name: string,
     subtitle: string,
     description: string,
     sex: number,

@@ -1,24 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Dimensions, Alert, Image, ImageBackground } from 'react-native';
-import { Input, Button } from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
-import firebase from '@react-native-firebase/app'
-
-import Icon from '../../assets'
+import { useDispatch, useSelector } from 'react-redux';
 import Fonts from '../../themes/Fonts';
+import { createUser, setStatus } from './AuthActions';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-const Register = () => {
+const Register = ({ navigation }: any) => {
+    const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
     const [ImgUrl, setImgUrl] = useState('');
     const [password, setPassword] = useState('');
 
+    const registerUser = () => {
+        dispatch(createUser(name, password, email))
+    }
+    const status = useSelector((store: any) => store.AuthReducer.status)
+    useEffect(() => {
+        if (status == "CREATE_SUCCESS") {
+            Alert.alert('Thông báo', status, [{ text: "OK", onPress: () => navigation.navigate('Login') }])
+        }
+
+    }, [status])
+
+
     return (
         <View style={styles.container}>
 
-
+            <Text>{status}</Text>
             <View style={styles.textInputView}>
                 <Ionicons name="person" size={22} color="#0B3B39" />
                 <TextInput
@@ -60,7 +70,7 @@ const Register = () => {
                 />
             </View>
 
-            <TouchableOpacity style={[styles.btn, { backgroundColor: '#2884FF' }]}>
+            <TouchableOpacity style={[styles.btn, { backgroundColor: '#2884FF' }]} onPress={() => registerUser()}>
                 <Text style={{ color: 'white', fontFamily: Fonts.bold }}>Tiếp tục</Text>
             </TouchableOpacity>
             {/* <Button title="Register" onPress={registerBtn} /> */}

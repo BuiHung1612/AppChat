@@ -22,8 +22,8 @@ const Profile = ({ navigation, route }: any) => {
 
     const [isVisible, setIsVisible] = useState(false);
     const dispatch = useDispatch()
-    const ProfileData = useSelector((store: any) => store.ProfileReducer.dataProfile)
-
+    // const ProfileData = useSelector((store: any) => store.ProfileReducer.dataProfile)
+    const ProfileData = useSelector((store: any) => store.AuthReducer.profile)
     const onHandleClose = () => {
         setIsVisible(false)
     }
@@ -32,7 +32,7 @@ const Profile = ({ navigation, route }: any) => {
     }, [])
 
     const RenderHeader = () => {
-        return <ListHeader data={ProfileData[0]} />
+        return <ListHeader data={ProfileData} />
 
     }
 
@@ -74,9 +74,16 @@ const Profile = ({ navigation, route }: any) => {
             {/* ảnh nhân vật + tên */}
             <View style={{ flex: 0.9, paddingHorizontal: 20 }}>
                 <FlatList
-                    data={ListUser[0].posts}
+                    data={ListUser[0]?.posts}
                     renderItem={RenderItemPost}
                     ListHeaderComponent={RenderHeader}
+                    ListEmptyComponent={() => {
+                        return (
+                            <View>
+                                <Text>empty</Text>
+                            </View>
+                        )
+                    }}
                     showsVerticalScrollIndicator={false}
                 />
             </View>

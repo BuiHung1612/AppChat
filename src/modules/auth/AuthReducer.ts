@@ -1,4 +1,5 @@
 
+import { UserProfile } from '../../shared/models/Profile';
 import { ACTION_TYPES } from './AuthActions';
 
 
@@ -9,6 +10,8 @@ const initialState: {
     canLoadMore: boolean,
     errorMessage: null | string
     token: null | string,
+    profile: UserProfile | null,
+    status: string | null
 } = {
     isInitializing: true,
     isLoading: false,
@@ -16,6 +19,8 @@ const initialState: {
     errorMessage: null,
     canLoadMore: false,
     token: null,
+    status: null,
+    profile: null
 };
 
 export type AuthState = Readonly<typeof initialState>;
@@ -49,6 +54,22 @@ const AuthRecuder = (
             return {
                 ...state,
                 errorMessage: action.payload.errorMessage,
+
+            };
+        case ACTION_TYPES.SET_STATUS:
+            console.log('action', action.payload);
+
+            return {
+                ...state,
+                status: action.payload.status,
+
+            };
+        case ACTION_TYPES.SET_PROFILE:
+
+
+            return {
+                ...state,
+                profile: action.payload.profile,
 
             };
 

@@ -27,12 +27,12 @@ const ListHeader = ({ data }: UserProps) => {
     return data !== undefined ? (
         <View style={{ alignItems: 'center', paddingTop: 40 }}>
             <Image
-                source={{ uri: data?.photoURL ?? data.userImage }}
+                source={{ uri: data?.photoURL ?? 'https://i.pinimg.com/236x/09/aa/8d/09aa8d86147fa14a67fda510d5df2f60.jpg' }}
                 style={{ width: 110, height: 110, borderRadius: 60 }}
             />
-            <Text style={styles.userName}>{data.userName ?? data?.displayName}</Text>
+            <Text style={styles.userName}>{data.user_name}</Text>
             <Text style={styles.description}>
-                {data.description ?? data?.email}
+                {data.description !== "" ? data.description : 'Người này rất lười ko chịu để thông tin gì'}
             </Text>
             <View style={{ marginTop: 10 }}>
                 <View style={styles.chipView}>
