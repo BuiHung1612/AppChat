@@ -6,9 +6,20 @@ const jwt = require('jsonwebtoken')
 /* GET users  */
 
 router.get("/list", function (req, res, next) {
-  sql.getUser().then((result) => {
+  sql.getListUser().then((result) => {
+
     res.json(result[0]);
-  });
+
+  }).catch(err => res.json({ message: 'Không có của trả về' }))
+});
+
+router.post("/images", function (req, res, next) {
+  let userId = req.body.userId
+  sql.getImagefromUserId(userId).then((result) => {
+
+    res.json({ images: result, message: 'Thành công', error: null });
+
+  }).catch(err => res.json({ message: 'Không có kết quả trả về' }))
 });
 
 // CREATE USER 
@@ -41,8 +52,9 @@ router.post('/register', function (req, res, next) {
   let userName = req.body.userName
   let email = req.body.email
   let passWord = req.body.passWord
-  console.log(userName, passWord, email);
-  sql.createUser(userName, passWord, email).then((data) => {
+  let imageUrl = req.body.imageUrl
+  console.log(userName, passWord, email, imageUrl);
+  sql.createUser(userName, passWord, email, imageUrl).then((data) => {
     if (data == 'CREATE_SUCCESS') {
       res.send({ isError: false, message: data })
     }
@@ -72,11 +84,19 @@ router.post('/profile', verifyToken, (req, res, next) => {
       res.sendStatus(403)
     }
     else {
-
-      res.json({
-        message: 'Thông tin Cá nhân',
-        user: authData.user.user.recordset[0]
+      let userId = authData.user.user.recordset[0].user_id
+      console.log('user', userId);
+      sql.getImagefromUserId(userId).then((result) => {
+        res.json({
+          message: 'Thông tin Cá nhân',
+          user: authData.user.user.recordset[0],
+          // user: {
+          //   profile: authData.user.user.recordset[0],
+          //   images: result
+          // }
+        })
       })
+
     }
   })
 })

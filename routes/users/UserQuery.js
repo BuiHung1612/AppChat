@@ -11,7 +11,7 @@ async function getdata() {
 }
 
 
-async function getUser() {
+async function getListUser() {
     try {
         let pool = await sql.connect(config);
         let res = await pool.request().query("SELECT *  FROM users");
@@ -53,8 +53,9 @@ async function Login(username, password) {
     // }
 }
 
-async function createUser(userName, passWord, email) {
+async function createUser(userName, passWord, email, imageUrl) {
     var userId = crypto.randomBytes(20).toString('hex');
+    var imageId = crypto.randomBytes(20).toString('hex');
     var postsId = userId.slice(0, 10)
 
     console.log(userId);
@@ -65,8 +66,9 @@ async function createUser(userName, passWord, email) {
         }
         else {
             let pool = await sql.connect(config);
-            let res = await pool.request().query(`INSERT INTO users(user_name,password,email,user_id,age,sex,postsId,followers,following,visited,description)
-            VALUES ('${userName}','${passWord}','${email}','${userId}','','','${postsId}',0,0,0,'')`);
+            await pool.request().query(`INSERT INTO users(user_name,password,email,user_id,age,sex,postsId,followers,following,visited,description,user_image)
+            VALUES ('${userName}','${passWord}','${email}','${userId}','','','${postsId}',0,0,0,'','${imageUrl}')`);
+            await pool.request().query(`INSERT INTO images(id_image,id_user,type,id_post,url) VALUES ('${imageId}','${userId}','avatar','','${imageUrl}')`)
             return 'CREATE_SUCCESS'
         }
 
@@ -78,37 +80,32 @@ async function createUser(userName, passWord, email) {
 }
 
 
+async function getImagefromUserId(userId) {
+
+    try {
+        let pool = await sql.connect(config)
+        let result = await pool.request().query(`select * from images where id_user='${userId}'`)
+
+        if (result.recordset[0] !== undefined) {
+            // console.log('result images', result.recordset);
+            return listImages = result.recordset
+
+        }
+        else {
+            return 'error'
+        }
+    }
+    catch (error) {
+        console.log(" mathus-error :" + error);
+    }
+}
 
 
 module.exports = {
     getdata: getdata,
-    getUser: getUser,
+    getListUser: getListUser,
     Login: Login,
-    createUser: createUser
+    createUser: createUser,
+    getImagefromUserId: getImagefromUserId
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
