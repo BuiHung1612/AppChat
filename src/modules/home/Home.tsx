@@ -10,16 +10,18 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import ModalProfile from '../../components/UserProfileModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProfile } from '../profile/ProfileAction';
-
+import { getListUser } from '../converstation/ConverstationActions';
+import { img_url } from '../../shared/Constants'
 const Home = ({ navigation }: any) => {
 
     const dispatch = useDispatch()
     const [showModal, setShowModal] = useState(false)
     const [selectUser, setSelectUser] = useState()
-    const ListUser = useSelector((store: any) => store.ProfileReducer.dataProfile)
+    const ListUser = useSelector((store: any) => store.ConverstationReducer.listUser)
+    console.log(ListUser);
 
     useEffect(() => {
-        dispatch(getProfile())
+        dispatch(getListUser())
     }, [])
 
     useLayoutEffect(() => {
@@ -56,11 +58,11 @@ const Home = ({ navigation }: any) => {
             navigation.navigate('UserProfile', { data: item })
         }}>
             <View style={{ marginRight: 14 }}>
-                <Image source={Icon.img_user} style={styles.userImage} />
+                <Image source={{ uri: item.user_image ?? img_url }} style={styles.userImage} />
             </View>
             <View style={styles.itemView2}>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={styles.userName}>{item.userName}</Text>
+                    <Text style={styles.userName}>{item.user_name}</Text>
                     <TagAge
                         sex={item.sex}
                         age={item.age}

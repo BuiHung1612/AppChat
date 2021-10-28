@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, Dimensions, Alert,
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
 import Fonts from '../../themes/Fonts';
-import { createUser, setStatus } from './AuthActions';
+import { ACTION_TYPES, createUser, setStatus } from './AuthActions';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const Register = ({ navigation }: any) => {
@@ -14,12 +14,24 @@ const Register = ({ navigation }: any) => {
     const [password, setPassword] = useState('');
 
     const registerUser = () => {
-        dispatch(createUser(name, password, email))
+        if (ImgUrl == '') {
+            let basicUrl = 'https://i.pinimg.com/236x/dd/1b/af/dd1baff67c1cdaf53b151468aab1516c.jpg'
+            dispatch(createUser(name, password, email, basicUrl))
+        }
+        else {
+            dispatch(createUser(name, password, email, ImgUrl))
+        }
+
     }
     const status = useSelector((store: any) => store.AuthReducer.status)
     useEffect(() => {
         if (status == "CREATE_SUCCESS") {
-            Alert.alert('Thông báo', status, [{ text: "OK", onPress: () => navigation.navigate('Login') }])
+            Alert.alert('Thông báo', status, [{
+                text: "OK", onPress: () => {
+                    navigation.navigate('Login')
+                    dispatch({ type: ACTION_TYPES.SET_STATUS, payload: { status: '' } })
+                }
+            }])
         }
 
     }, [status])

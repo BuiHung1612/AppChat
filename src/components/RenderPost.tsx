@@ -52,18 +52,10 @@ const RenderPost = ({ item, typeReport }: Props) => {
                         </Text>
                     </View>
                 </View>
-                {/* <Text
-                    style={{
-                        color: '#DDDDDD',
-                        fontFamily: Fonts.bold,
-                        paddingVertical: 10
-                    }}
-                >
-                    {item.createUp}
-                </Text>
+
                 <TouchableOpacity onPress={() => setShowReport(true)} >
                     <Ionicons name="ellipsis-horizontal" size={20} />
-                </TouchableOpacity> */}
+                </TouchableOpacity>
 
             </View>
             <Text style={{ paddingVertical: 10 }}>{item.subtitle}</Text>
@@ -101,6 +93,7 @@ const RenderPost = ({ item, typeReport }: Props) => {
                     <Text style={{ marginLeft: 8 }}>{item.disLike}</Text>
                 </View>
             </View>
+
             {
                 typeReport == "Profile" ? (
                     <Report isVisible={showReport}
@@ -116,8 +109,6 @@ const RenderPost = ({ item, typeReport }: Props) => {
                             setVisible={onCancelReport} />)
 
             }
-
-            {/* <Comment isVisible={showComment} onCloseComment={onCloseComment} data={item} dataUser={dataUser} /> */}
         </View>
     );
 };

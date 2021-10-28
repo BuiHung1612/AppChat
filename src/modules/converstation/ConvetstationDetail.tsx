@@ -1,13 +1,46 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react'
-import { KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
+import { Image, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Metrics from '../../themes/Metrics';
 import { useHeaderHeight } from '@react-navigation/elements';
+import { Bubble, GiftedChat, InputToolbar, Message, Send, SystemMessage } from 'react-native-gifted-chat'
+
+export const renderSend = (props: any) => (
+    <Send
+        {...props}
+        disabled={!props.text}
+        containerStyle={{
+            width: 44,
+            height: 44,
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'red',
+            marginHorizontal: 4,
+        }}
+    >
+        <Ionicons name="send" size={24} />
+    </Send>
+);
+
+export const renderBubble = (props: any) => (
+    <Bubble
+        {...props}
+
+        wrapperStyle={{
+            left: { backgroundColor: '#F2F2F2', padding: 4 },
+            right: { padding: 4 },
+        }}
+
+
+    />
+);
+
+
+
+
 const ConvetstationDetail = ({ navigation, route }: any) => {
     const { Id_Room } = route.params
-    const [visibleSend, setVisibleSend] = useState(false)
-    const [message, setMessage] = useState('')
-    const headerHeight = useHeaderHeight();
+    const [messages, setMessages] = useState<any>([]);
     useLayoutEffect(() => {
         navigation.setOptions({
             title: `${Id_Room.userName}`,
@@ -60,46 +93,91 @@ const ConvetstationDetail = ({ navigation, route }: any) => {
             </View>
         });
     }, [navigation]);
-    const onStartEdit = () => {
-        setVisibleSend(true)
-    }
-    useEffect(() => {
-        if (message == '') {
-            setVisibleSend(false)
-        }
-    }, [message])
-    return (
-        <SafeAreaView style={styles.container}>
 
-            <View style={styles.boxChat}>
-                <Text>alo</Text>
+    const btnIcon = () => {
+        return (
+            <View
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+
+
+                }}>
+                <TouchableOpacity>
+                    <Ionicons name="camera-outline" size={27} color="#000" style={{ paddingHorizontal: 10 }} />
+                </TouchableOpacity>
+                <TouchableOpacity >
+                    <Ionicons name="image-outline" size={27} color="#000" />
+                </TouchableOpacity>
+
             </View>
-            <KeyboardAvoidingView
-                style={styles.textInputView}
-                behavior={Platform.OS === 'ios' ? 'padding' : "height"}
-                keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 0}
-            >
+        );
+    };
 
-                <TouchableOpacity style={styles.iconButton}>
-                    <Ionicons name="mic-outline" size={24} />
-                </TouchableOpacity>
-                <View style={{ flexDirection: 'row' }}>
 
-                    <TextInput style={styles.inputStyles} value={message} onChangeText={(text) => setMessage(text)} onChange={() => onStartEdit()} placeholder="Nhập tin nhắn" placeholderTextColor="gray" />
-                    {
-                        visibleSend == true ? <TouchableOpacity style={styles.iconSend}>
-                            <Ionicons name="send" size={20} />
-                        </TouchableOpacity> : null
-                    }
-                </View>
-                <TouchableOpacity style={styles.iconButton}>
-                    <Ionicons name="alarm-outline" size={24} />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.iconButton}>
-                    <Ionicons name="image-outline" size={24} />
-                </TouchableOpacity>
-            </KeyboardAvoidingView>
-        </SafeAreaView>
+    const fakeData = Array(20).fill('').map((e, i) => ({
+
+
+        _id: i != 1 ? i : 10,
+        text: `xin chào ${i}`,
+        createdAt: new Date(),
+        user: {
+            _id: i != 1 ? i : 10,
+            name: 'hùng bùi',
+            avatar: 'https://i.pinimg.com/236x/8d/e3/2e/8de32e91363eef57421625e183ce7c74.jpg',
+        },
+
+
+    }))
+
+
+    useEffect(() => {
+
+        setMessages(fakeData.map((e, i) => ({
+
+            _id: i,
+            text: `xin chào ${i}`,
+            createdAt: new Date(),
+            user: {
+                _id: i,
+                name: 'hùng bùi',
+                avatar: 'https://i.pinimg.com/236x/8d/e3/2e/8de32e91363eef57421625e183ce7c74.jpg',
+            },
+
+        })))
+
+    }, [])
+
+
+    const onSend = useCallback((messages = []) => {
+        setMessages((previousMessages: any) => GiftedChat.append(previousMessages, messages))
+        console.log(messages);
+    }, [])
+    const renderInputToolbar = (props) => (
+        <InputToolbar
+            {...props}
+            primaryStyle={{ alignItems: 'center', }}
+        />
+    );
+
+    return (
+        <View style={styles.container}>
+
+
+            <GiftedChat
+                messages={messages}
+                isCustomViewBottom={true}
+                renderSend={renderSend}
+                renderBubble={renderBubble}
+                renderActions={btnIcon}
+                renderInputToolbar={renderInputToolbar}
+                onSend={messages => onSend(messages)}
+
+                user={{
+                    _id: 100,
+                }}
+            />
+        </View>
     )
 }
 
@@ -107,7 +185,8 @@ export default ConvetstationDetail
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: 'white'
     },
     boxChat: {
         flex: 0.92,

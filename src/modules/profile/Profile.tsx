@@ -24,6 +24,8 @@ const Profile = ({ navigation, route }: any) => {
     const dispatch = useDispatch()
     // const ProfileData = useSelector((store: any) => store.ProfileReducer.dataProfile)
     const ProfileData = useSelector((store: any) => store.AuthReducer.profile)
+    console.log('ProfileData', ProfileData);
+
     const onHandleClose = () => {
         setIsVisible(false)
     }
@@ -97,7 +99,12 @@ const Profile = ({ navigation, route }: any) => {
                 <SpeedDial.Action
                     icon={{ name: 'add', color: '#fff' }}
                     title="Add"
-                    onPress={() => console.log('Add Something')}
+                    onPress={() => {
+                        navigation.navigate('addPost')
+                        setTimeout(() => {
+                            setOpen(false)
+                        }, 200);
+                    }}
                 />
                 <SpeedDial.Action
                     icon={{ name: 'log-out-outline', type: "ionicon", color: '#fff' }}

@@ -11,7 +11,8 @@ const initialState: {
     errorMessage: null | string
     token: null | string,
     profile: UserProfile | null,
-    status: string | null
+    status: string | null,
+    images: any
 } = {
     isInitializing: true,
     isLoading: false,
@@ -20,7 +21,8 @@ const initialState: {
     canLoadMore: false,
     token: null,
     status: null,
-    profile: null
+    profile: null,
+    images: null
 };
 
 export type AuthState = Readonly<typeof initialState>;
@@ -70,6 +72,15 @@ const AuthRecuder = (
             return {
                 ...state,
                 profile: action.payload.profile,
+
+            };
+
+        case ACTION_TYPES.SET_USER_IMAGE:
+
+
+            return {
+                ...state,
+                images: action.payload.images,
 
             };
 

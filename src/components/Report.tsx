@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import { Alert, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import { BottomSheet } from 'react-native-elements'
 import Colors from '../themes/Colors'
 import Fonts from '../themes/Fonts'
@@ -17,7 +17,11 @@ interface ReportButton {
 const Report = ({ isVisible, button1, button2, button3, fourButton, cancelLabel, setVisible }: ReportButton) => {
     console.log(button2);
 
-
+    const alertComming = () => {
+        Alert.alert("Thông báo", `Chức năng đang được phát triển. \nHãy chờ trong phiên bản cập nhật sắp tới!`, [
+            { text: "Tôi đã hiểu" }
+        ])
+    }
     return (
         <BottomSheet
 
@@ -26,19 +30,19 @@ const Report = ({ isVisible, button1, button2, button3, fourButton, cancelLabel,
             containerStyle={{ backgroundColor: 'rgba(0.5, 0.25, 0, 0.2)' }}
         >
             <TouchableOpacity onPress={() => setVisible(false)} style={{ flex: 1 }}>
-                <TouchableOpacity style={styles.reportButton}>
+                <TouchableOpacity style={styles.reportButton} onPress={() => alertComming()}>
                     <Text style={styles.reportLabel}>{button1}</Text>
                 </TouchableOpacity>
                 {
                     button2 !== undefined ? (
-                        <TouchableOpacity style={[styles.reportButton, fourButton == false ? { backgroundColor: '#FF68A3' } : null]}>
+                        <TouchableOpacity onPress={() => alertComming()} style={[styles.reportButton, fourButton == false ? { backgroundColor: '#FF68A3' } : null]}>
                             <Text style={styles.reportLabel}>{button2}</Text>
                         </TouchableOpacity>
                     ) : null
                 }
                 {
                     button3 !== undefined ? (
-                        <TouchableOpacity style={[styles.reportButton]}>
+                        <TouchableOpacity onPress={() => alertComming()} style={[styles.reportButton]}>
                             <Text style={styles.reportLabel}>{button3}</Text>
                         </TouchableOpacity>
                     ) : null

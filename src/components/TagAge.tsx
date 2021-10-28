@@ -6,8 +6,6 @@ import Colors from '../themes/Colors';
 import Fonts from '../themes/Fonts';
 
 const TagAge = (data: any) => {
-    console.log('data', data);
-
 
     return (
         <View
@@ -21,7 +19,10 @@ const TagAge = (data: any) => {
                 size={12}
                 color={Colors.white}
             />
-            <Text style={styles.tagAgeText}>{data.age}</Text>
+            {
+                data.age < 8 ? null : <Text style={styles.tagAgeText}>{data.age}</Text>
+            }
+
         </View>
     );
 };
@@ -33,12 +34,12 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         height: 16,
         alignItems: 'center',
-        paddingHorizontal: 4,
+        paddingHorizontal: 6,
         justifyContent: 'space-evenly',
         backgroundColor: '#FF6BA5',
         flexDirection: 'row',
         borderRadius: 10,
-        width: 34
+
     },
     tagAgeText: {
         fontSize: 10,

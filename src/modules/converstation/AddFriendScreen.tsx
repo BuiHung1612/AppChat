@@ -10,70 +10,78 @@ import {
     Dimensions,
     Alert,
 } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { getListUser } from './ConverstationActions';
+import { img_url } from '../../shared/Constants'
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const AddFriend = () => {
     const [data, setData] = useState([]);
+    const dispatch = useDispatch()
+    const ListUserData = useSelector((store: any) => store.ConverstationReducer.listUser)
+    console.log('ListUserData', ListUserData);
+
+    useEffect(() => {
+        dispatch(getListUser())
+        return () => {
+
+        }
+    }, [])
 
 
+    const ItemRender = ({ item }: any) => {
+        return (
+            <View>
+                <TouchableOpacity
+                    style={styles.btnContainer}
+                    onPress={() => Alert.alert(item.user_name)}>
+                    <View style={{ width: windowWidth * 0.25, justifyContent: 'center', alignItems: 'center' }}>
+                        <Image source={{ uri: item.user_image ?? img_url }} style={styles.userImg} />
+                    </View>
 
+                    <View
+                        style={{
+                            width: windowWidth * 0.67,
 
-    // const addFriend = (idFriend: any, _iddocument: any) => {
-
-    // const ItemRender = ({ item }: any) => {
-    //     if (auth().currentUser?.uid !== item.id)
-    //         return (
-    //             <TouchableOpacity
-    //                 style={styles.btnContainer}
-    //                 onPress={() => Alert.alert(item.displayName)}>
-    //                 <View style={{ width: windowWidth * 0.25, justifyContent: 'center', alignItems: 'center' }}>
-    //                     <Image source={{ uri: item.ImgUrl }} style={styles.userImg} />
-    //                 </View>
-
-    //                 <View
-    //                     style={{
-    //                         width: windowWidth * 0.67,
-
-    //                     }}>
-    //                     <View
-    //                         style={{
-    //                             flexDirection: 'row',
-    //                             justifyContent: 'space-between',
-    //                         }}>
-    //                         <Text style={styles.userName}>{item.displayName}</Text>
-    //                         <Text style={styles.requestTime}>1 ngày</Text>
-    //                     </View>
-    //                     <View
-    //                         style={{
-    //                             flexDirection: 'row',
-    //                             marginTop: 10,
-    //                         }}>
-    //                         <TouchableOpacity
-    //                             style={styles.btnAddFriend}
-    //                             onPress={() => addFriend(item.id)}>
-    //                             <Text style={styles.btnText}>Thêm bạn bè</Text>
-    //                         </TouchableOpacity>
-    //                         <TouchableOpacity style={styles.btnUnAddFriend}>
-    //                             <Text style={styles.btnText}>Gỡ</Text>
-    //                         </TouchableOpacity>
-    //                     </View>
-    //                 </View>
-    //             </TouchableOpacity>
-    //         );
-
-
-    // }
+                        }}>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                            }}>
+                            <Text style={styles.userName}>{item.user_name}</Text>
+                            <Text style={styles.requestTime}>1 ngày</Text>
+                        </View>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                marginTop: 10,
+                            }}>
+                            <TouchableOpacity
+                                style={styles.btnAddFriend}
+                            >
+                                <Text style={styles.btnText}>Thêm bạn bè</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.btnUnAddFriend}>
+                                <Text style={styles.btnText}>Gỡ</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </TouchableOpacity>
+            </View>
+        )
+    }
     return (
         <View style={styles.container}>
 
             <View style={{ flex: 0.94 }}>
-                {/* <FlatList
-                    data={data}
+                <FlatList
+                    data={ListUserData}
                     renderItem={ItemRender}
                     keyExtractor={(item, index) => index.toString()}
-                /> */}
-                <Text>KẾT BẠN</Text>
+                />
+
             </View>
         </View>
     );

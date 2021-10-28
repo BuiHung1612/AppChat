@@ -13,6 +13,7 @@ import LoginScreen from '../modules/auth/Login';
 import AddFriend from '../modules/converstation/AddFriendScreen';
 import Register from '../modules/auth/Register';
 import ModalProfile from '../components/UserProfileModal';
+import AddPost from '../modules/addPost/AddPost';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator()
@@ -39,6 +40,16 @@ const MainStack = () => {
                 options={{
                     headerTitleAlign: 'center',
                     title: 'User Name',
+                    headerShadowVisible: false,
+                }}
+            />
+
+            <Stack.Screen
+                name="addPost"
+                component={AddPost}
+                options={{
+                    headerTitleAlign: 'center',
+                    title: 'Đăng bài',
                     headerShadowVisible: false,
                 }}
             />
