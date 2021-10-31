@@ -85,7 +85,7 @@ router.post('/profile', verifyToken, (req, res, next) => {
     }
     else {
       let userId = authData.user.user.recordset[0].user_id
-      console.log('user', userId);
+
       sql.getImagefromUserId(userId).then((result) => {
         res.json({
           message: 'Thông tin Cá nhân',
