@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+    ActivityIndicator,
     FlatList,
     Text,
     TouchableOpacity,
@@ -14,24 +15,29 @@ import ListHeader from '../../components/ListHeader';
 import RenderPost from '../../components/RenderPost';
 import ListUser from '../home/ListUserData'
 import { useDispatch, useSelector } from 'react-redux';
-import { getProfile } from './ProfileAction';
+import { getListPost } from './ProfileAction';
 import { onSignOut } from '../auth/AuthActions';
 const Profile = ({ navigation, route }: any) => {
 
     const [open, setOpen] = useState(false);
-
-    const [isVisible, setIsVisible] = useState(false);
+    const [refresh, setRefresh] = useState(false)
     const dispatch = useDispatch()
-    // const ProfileData = useSelector((store: any) => store.ProfileReducer.dataProfile)
     const ProfileData = useSelector((store: any) => store.AuthReducer.profile)
-    console.log('ProfileData', ProfileData);
+    const token = useSelector((store: any) => store.AuthReducer.token)
+    const listPost = useSelector((store: any) => store.ProfileReducer.listPost)
+    console.log('list post:', listPost);
 
-    const onHandleClose = () => {
-        setIsVisible(false)
-    }
+
     useEffect(() => {
-        dispatch(getProfile())
+        // const interval = setInterval(() => {
+        dispatch(getListPost(token))
+        // }, 3000);
+        // return () => clearInterval(interval);
+
     }, [])
+    const onHandleRefresh = () => {
+        dispatch(getListPost(token))
+    }
 
     const RenderHeader = () => {
         return <ListHeader data={ProfileData} />
@@ -75,19 +81,27 @@ const Profile = ({ navigation, route }: any) => {
             </View>
             {/* ảnh nhân vật + tên */}
             <View style={{ flex: 0.9, paddingHorizontal: 20 }}>
-                <FlatList
-                    data={ListUser[0]?.posts}
-                    renderItem={RenderItemPost}
-                    ListHeaderComponent={RenderHeader}
-                    ListEmptyComponent={() => {
-                        return (
-                            <View>
-                                <Text>empty</Text>
-                            </View>
-                        )
-                    }}
-                    showsVerticalScrollIndicator={false}
-                />
+                {
+                    listPost != null ? (
+                        <FlatList
+                            data={listPost?.list_Post}
+                            renderItem={RenderItemPost}
+                            ListHeaderComponent={RenderHeader}
+                            refreshing={refresh}
+                            onRefresh={onHandleRefresh}
+                            ListEmptyComponent={() => {
+                                return (
+                                    <View>
+                                        <Text>empty</Text>
+                                    </View>
+                                )
+                            }}
+                            showsVerticalScrollIndicator={false}
+                        />
+                    ) : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                        <ActivityIndicator size={26} color="blue" />
+                    </View>
+                }
             </View>
             <SpeedDial
                 isOpen={open}

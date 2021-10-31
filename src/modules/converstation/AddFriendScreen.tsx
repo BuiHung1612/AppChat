@@ -11,7 +11,7 @@ import {
     Alert,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { getListUser } from './ConverstationActions';
+import { acceptRequestFriend, getListRequestFriend, getListUser } from './ConverstationActions';
 import { img_url } from '../../shared/Constants'
 
 const windowWidth = Dimensions.get('window').width;
@@ -20,14 +20,26 @@ const AddFriend = () => {
     const [data, setData] = useState([]);
     const dispatch = useDispatch()
     const ListUserData = useSelector((store: any) => store.ConverstationReducer.listUser)
-    console.log('ListUserData', ListUserData);
+    const token = useSelector((store: any) => store.AuthReducer.token)
+    const listRequestFriend = useSelector((store: any) => store.ConverstationReducer.listRequestFriend)
+    console.log('listRequestFriend', listRequestFriend);
 
     useEffect(() => {
-        dispatch(getListUser())
-        return () => {
-
-        }
+        dispatch(getListRequestFriend(token))
     }, [])
+
+    useEffect(() => {
+
+        const interval = setInterval(() => {
+            dispatch(getListRequestFriend(token))
+        }, 3000);
+        return () => clearInterval(interval);
+
+    }, [])
+
+    const onAccessRequest = (item: any) => {
+        dispatch(acceptRequestFriend(token, item))
+    }
 
 
     const ItemRender = ({ item }: any) => {
@@ -37,7 +49,7 @@ const AddFriend = () => {
                     style={styles.btnContainer}
                     onPress={() => Alert.alert(item.user_name)}>
                     <View style={{ width: windowWidth * 0.25, justifyContent: 'center', alignItems: 'center' }}>
-                        <Image source={{ uri: item.user_image ?? img_url }} style={styles.userImg} />
+                        <Image source={{ uri: item.request_sender_img ?? img_url }} style={styles.userImg} />
                     </View>
 
                     <View
@@ -50,8 +62,8 @@ const AddFriend = () => {
                                 flexDirection: 'row',
                                 justifyContent: 'space-between',
                             }}>
-                            <Text style={styles.userName}>{item.user_name}</Text>
-                            <Text style={styles.requestTime}>1 ngày</Text>
+                            <Text style={styles.userName}>{item.request_sender_name}</Text>
+                            <Text style={styles.requestTime}>{item.create_up ?? '1 ngày'}</Text>
                         </View>
                         <View
                             style={{
@@ -60,6 +72,7 @@ const AddFriend = () => {
                             }}>
                             <TouchableOpacity
                                 style={styles.btnAddFriend}
+                                onPress={() => onAccessRequest(item)}
                             >
                                 <Text style={styles.btnText}>Thêm bạn bè</Text>
                             </TouchableOpacity>
@@ -77,7 +90,7 @@ const AddFriend = () => {
 
             <View style={{ flex: 0.94 }}>
                 <FlatList
-                    data={ListUserData}
+                    data={listRequestFriend}
                     renderItem={ItemRender}
                     keyExtractor={(item, index) => index.toString()}
                 />

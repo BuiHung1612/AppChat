@@ -13,7 +13,7 @@ interface RootState {
 const AppNavigator = () => {
     const dispatch = useDispatch()
     const isUserLogin = useSelector((store: RootState) => store.AuthReducer.token)
-    console.log('initial', isUserLogin);
+
     if (isUserLogin !== null) {
         dispatch(getProfileUser(isUserLogin))
     }

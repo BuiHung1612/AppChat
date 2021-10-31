@@ -7,23 +7,23 @@ import styles from '../modules/profile/Profile.styles'
 import Report from './Report'
 import { useNavigation } from '@react-navigation/native';
 import TagAge from './TagAge';
+import { img_url } from '../shared/Constants';
 interface Props {
     typeReport?: string,
-    item: Post,
+    item: any,
 }
 const RenderPost = ({ item, typeReport }: Props) => {
     const [showReport, setShowReport] = useState(false)
     const [showComment, setShowComment] = useState(false)
     const [like, setLike] = useState(false)
-    const navigation: any = useNavigation()
-
+    const navigation = useNavigation()
 
     const onCancelReport = () => {
         setShowReport(false)
     }
 
     return (
-        <View style={{ maxWidth: '100%', marginTop: 10 }}>
+        <View style={{ maxWidth: '100%', marginTop: 10, }}>
             <View
                 style={{
                     flexDirection: 'row',
@@ -34,13 +34,13 @@ const RenderPost = ({ item, typeReport }: Props) => {
             >
                 <View style={[styles.flexrowAndAlign]}>
                     {
-                        typeReport !== "news" ? null : (<TouchableOpacity >
-                            <Image source={item?.userImage} style={styles.userImage} />
+                        typeReport !== "news" ? null : (<TouchableOpacity onPress={() => navigation.navigate('UserProfile', { data: item })} >
+                            <Image source={{ uri: item?.user_image }} style={styles.userImage} />
                         </TouchableOpacity>)
                     }
                     <View style={{ marginLeft: 10 }}>
                         {typeReport !== "news" ? null : (<View style={{ flexDirection: 'row', }}>
-                            <Text>{item?.userName}</Text>
+                            <Text>{item?.user_name}</Text>
                             <TagAge sex={item?.sex}
                                 age={item?.age} />
                         </View>)
@@ -48,7 +48,7 @@ const RenderPost = ({ item, typeReport }: Props) => {
                         <Text
                             style={styles.createUpText}
                         >
-                            {item.createUp}
+                            {new Date(item.create_up).toLocaleDateString()}
                         </Text>
                     </View>
                 </View>
@@ -58,10 +58,10 @@ const RenderPost = ({ item, typeReport }: Props) => {
                 </TouchableOpacity>
 
             </View>
-            <Text style={{ paddingVertical: 10 }}>{item.subtitle}</Text>
+            <Text style={{ paddingVertical: 10 }}>{item.post_content}</Text>
             {item.image !== null ? (
                 <Image
-                    source={{ uri: item.image }}
+                    source={{ uri: item.post_image ?? img_url }}
                     style={styles.imagePost}
                 />
             ) : null}
@@ -79,7 +79,7 @@ const RenderPost = ({ item, typeReport }: Props) => {
                             color={like ? 'red' : '#DFDFDF'}
                         />
                     </TouchableOpacity>
-                    <Text style={{ marginLeft: 6 }}>{item.like}</Text>
+                    <Text style={{ marginLeft: 6 }}>{item.like_number}</Text>
                 </View>
 
                 <View style={[styles.flexrowAndAlign, { marginLeft: 24 }]}>
@@ -90,7 +90,7 @@ const RenderPost = ({ item, typeReport }: Props) => {
                             color={'#DFDFDF'}
                         />
                     </TouchableOpacity>
-                    <Text style={{ marginLeft: 8 }}>{item.disLike}</Text>
+                    <Text style={{ marginLeft: 8 }}>0</Text>
                 </View>
             </View>
 

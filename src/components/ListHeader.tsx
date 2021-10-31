@@ -7,9 +7,6 @@ interface UserProps {
     data: any
 }
 const ListHeader = ({ data }: UserProps) => {
-    console.log('dba', data);
-
-
 
     const Chip = ({ title }: any) => {
         return (

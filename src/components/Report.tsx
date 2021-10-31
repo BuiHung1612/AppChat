@@ -1,6 +1,8 @@
 import React from 'react'
 import { Alert, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import { BottomSheet } from 'react-native-elements'
+import { useDispatch } from 'react-redux'
+import { addFriend } from '../modules/converstation/ConverstationActions'
 import Colors from '../themes/Colors'
 import Fonts from '../themes/Fonts'
 
@@ -12,15 +14,21 @@ interface ReportButton {
     cancelLabel?: string,
     fourButton?: boolean,
     setVisible: (isVisible: boolean) => void,
+    userId?: string,
+    token?: any
 }
 
-const Report = ({ isVisible, button1, button2, button3, fourButton, cancelLabel, setVisible }: ReportButton) => {
-    console.log(button2);
+const Report = ({ isVisible, button1, button2, button3, fourButton, cancelLabel, setVisible, userId, token }: ReportButton) => {
 
     const alertComming = () => {
         Alert.alert("Thông báo", `Chức năng đang được phát triển. \nHãy chờ trong phiên bản cập nhật sắp tới!`, [
             { text: "Tôi đã hiểu" }
         ])
+    }
+    const dispatch = useDispatch()
+
+    const onPressAddFriend = () => {
+        dispatch(addFriend(userId, token))
     }
     return (
         <BottomSheet
@@ -35,7 +43,7 @@ const Report = ({ isVisible, button1, button2, button3, fourButton, cancelLabel,
                 </TouchableOpacity>
                 {
                     button2 !== undefined ? (
-                        <TouchableOpacity onPress={() => alertComming()} style={[styles.reportButton, fourButton == false ? { backgroundColor: '#FF68A3' } : null]}>
+                        <TouchableOpacity onPress={() => onPressAddFriend()} style={[styles.reportButton, fourButton == false ? { backgroundColor: '#FF68A3' } : null]}>
                             <Text style={styles.reportLabel}>{button2}</Text>
                         </TouchableOpacity>
                     ) : null

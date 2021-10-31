@@ -9,7 +9,6 @@ import TagAge from '../../components/TagAge';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ModalProfile from '../../components/UserProfileModal';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProfile } from '../profile/ProfileAction';
 import { getListUser } from '../converstation/ConverstationActions';
 import { img_url } from '../../shared/Constants'
 const Home = ({ navigation }: any) => {
@@ -18,7 +17,7 @@ const Home = ({ navigation }: any) => {
     const [showModal, setShowModal] = useState(false)
     const [selectUser, setSelectUser] = useState()
     const ListUser = useSelector((store: any) => store.ConverstationReducer.listUser)
-    console.log(ListUser);
+    const ProfileData = useSelector((store: any) => store.AuthReducer.profile)
 
     useEffect(() => {
         dispatch(getListUser())
@@ -53,25 +52,33 @@ const Home = ({ navigation }: any) => {
         );
     };
 
-    const itemBoxRender = ({ item }: any) =>
-        <TouchableOpacity style={styles.itemView} onPress={() => {
-            navigation.navigate('UserProfile', { data: item })
-        }}>
-            <View style={{ marginRight: 14 }}>
-                <Image source={{ uri: item.user_image ?? img_url }} style={styles.userImage} />
-            </View>
-            <View style={styles.itemView2}>
-                <View style={{ flexDirection: 'row' }}>
-                    <Text style={styles.userName}>{item.user_name}</Text>
-                    <TagAge
-                        sex={item.sex}
-                        age={item.age}
-
-                    />
+    const itemBoxRender = ({ item }: any) => {
+        return item?.user_id != ProfileData.user_id ? (
+            < TouchableOpacity style={styles.itemView} onPress={() => {
+                navigation.navigate('UserProfile', { data: item })
+            }}>
+                <View style={{ marginRight: 14 }}>
+                    <Image source={{ uri: item.user_image ?? img_url }} style={styles.userImage} />
                 </View>
-                <Text style={styles.description}>Anh ấy là người mới</Text>
-            </View>
-        </TouchableOpacity>
+                <View style={styles.itemView2}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={styles.userName}>{item.user_name}</Text>
+                        <TagAge
+                            sex={item.sex}
+                            age={item.age}
+
+                        />
+                    </View>
+                    <Text style={styles.description}>Anh ấy là người mới</Text>
+                </View>
+            </TouchableOpacity >
+        ) : null
+
+
+
+
+    }
+
 
 
     const onCloseModel = () => {

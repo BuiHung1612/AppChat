@@ -7,13 +7,15 @@ const initialState: {
     isLoading: boolean,
     dataProfile: null | UserProfile,
     canLoadMore: boolean,
-    errorMessage: null | string
+    errorMessage: null | string,
+    listPost: any
 } = {
     isInitializing: true,
     isLoading: false,
     dataProfile: null,
     errorMessage: null,
-    canLoadMore: false
+    canLoadMore: false,
+    listPost: null
 };
 
 export type ProfileState = Readonly<typeof initialState>;
@@ -40,6 +42,12 @@ const ProfileReducer = (
             return {
                 ...state,
                 isLoading: action.payload.isLoading,
+            };
+
+        case ACTION_TYPES.SET_POSTS:
+            return {
+                ...state,
+                listPost: action.payload.listPost,
             };
 
         case ACTION_TYPES.SET_ERROR_MESSAGE:

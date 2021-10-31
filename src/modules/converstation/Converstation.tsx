@@ -1,5 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import {
+    ActivityIndicator,
     FlatList,
     Image,
     StyleSheet,
@@ -16,6 +17,8 @@ import { ListConverstations } from './ListConverstations';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Avatar } from 'react-native-elements';
+import { useDispatch, useSelector } from 'react-redux';
+import { getListFriend } from './ConverstationActions';
 const Converstation = ({ navigation }: any) => {
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -53,14 +56,25 @@ const Converstation = ({ navigation }: any) => {
         });
     }, [navigation]);
 
-    const [listUser, setListUser] = useState([])
+    const dispatch = useDispatch()
+    const token = useSelector((store: any) => store.AuthReducer.token)
+    const isLoading = useSelector((store: any) => store.ConverstationReducer.isLoading)
+    const listFriend = useSelector((store: any) => store.ConverstationReducer.listFriend)
+    const ProfileData = useSelector((store: any) => store.AuthReducer.profile)
+    console.log('isloading', isLoading);
 
+    useEffect(() => {
+        dispatch(getListFriend(token))
+    }, [])
 
+    const onRefresher = () => {
+        dispatch(getListFriend(token))
 
+    }
 
     const RenderButton = ({ item, action, title, subtitle }: any) => {
         return (
-            <TouchableOpacity style={styles.buttonView} onPress={() => navigation.navigate(action !== 'Notification' ? 'ConvetstationDetail' : undefined, { Id_Room: item })
+            <TouchableOpacity style={styles.buttonView} onPress={() => navigation.navigate(action !== 'Notification' ? 'ConvetstationDetail' : undefined, { Room: item })
             }>
                 <View
                     style={[
@@ -81,36 +95,30 @@ const Converstation = ({ navigation }: any) => {
                         />
                     ) : (
                         <Image
-                            source={item.userImage}
+                            source={{ uri: ProfileData.user_id == item.user_id_0 ? item.user_img_1 : item.user_img_0 }}
                             style={styles.iconView}
                         />
                     )}
                 </View>
                 <View style={{ marginLeft: 10, width: '86%' }}>
                     <Text style={styles.titleStyle}>
-                        {action == 'Notification' ? title : item.userName}
+                        {action == 'Notification' ? title : ProfileData.user_id == item.user_id_0 ? item.user_name_1 : item.user_name_0}
                     </Text>
                     <Text style={styles.subtitleStyle} numberOfLines={1}>
                         {action == 'Notification' ? subtitle : item.subtitle}
                     </Text>
                 </View>
             </TouchableOpacity >
-        );
+        )
     };
-    const example = {
-        title: 'Big pimple',
-        size: 65,
-        badgeProps: {
-            size: 'pimpleHuge',
-            borderWidth: 0,
-            backgroundColor: '#51CA31',
-        },
-        badgePosition: 'BOTTOM_RIGHT',
-    };
+
     return (
         <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+
+
+
             <FlatList
-                data={ListConverstations}
+                data={listFriend}
                 renderItem={RenderButton}
                 ListHeaderComponent={() => (
                     <RenderButton
@@ -119,8 +127,13 @@ const Converstation = ({ navigation }: any) => {
                         subtitle={`"người bí ẩn" vừa ghé thăm trang cá nhân của bạn`}
                     />
                 )}
+                refreshing={isLoading}
+                onRefresh={onRefresher}
                 showsVerticalScrollIndicator={false}
             />
+
+
+
         </SafeAreaView>
     );
 };

@@ -8,14 +8,24 @@ const initialState: {
     isLoading: boolean,
     canLoadMore: boolean,
     errorMessage: null | string
-    listUser: any
+    listUser: any,
+    isAddSuccess: string | null,
+    listRequestFriend: any,
+    acceptLoading: boolean,
+    listFriend: any,
+    messages: any
 
 } = {
     isInitializing: true,
     isLoading: false,
     errorMessage: null,
     canLoadMore: false,
-    listUser: null
+    listUser: null,
+    isAddSuccess: null,
+    listRequestFriend: null,
+    acceptLoading: false,
+    listFriend: null,
+    messages: null
 
 
 
@@ -38,6 +48,29 @@ const ConverstationReducer = (
                 listUser: action.payload.listUser,
                 errorMessage: null,
             };
+        case ACTION_TYPES.SET_ISLOADING:
+
+            return {
+                ...state,
+                isLoading: action.payload.isLoading,
+
+            };
+        case ACTION_TYPES.SET_LIST_FRIEND:
+
+            return {
+                ...state,
+                listFriend: action.payload.listFriend,
+                isLoading: action.payload.isLoading,
+
+            };
+        case ACTION_TYPES.SET_LIST_MESSAGES:
+
+            return {
+                ...state,
+                messages: action.payload.messages,
+                isLoading: action.payload.isLoading,
+
+            };
 
         case ACTION_TYPES.SET_MESSAGES_ERROR:
 
@@ -47,6 +80,28 @@ const ConverstationReducer = (
 
             };
 
+        case ACTION_TYPES.SET_MESSAGE_ADDFRIEND:
+
+            return {
+                ...state,
+                isAddSuccess: action.payload.isAddSuccess,
+
+            };
+
+        case ACTION_TYPES.SET_LIST_REQUESTFRIEND:
+
+            return {
+                ...state,
+                listRequestFriend: action.payload.listRequestFriend,
+
+            };
+        case ACTION_TYPES.SET_ACCEPT_LOADING:
+
+            return {
+                ...state,
+                acceptLoading: action.payload.acceptLoading,
+
+            };
         default:
             return state;
     }

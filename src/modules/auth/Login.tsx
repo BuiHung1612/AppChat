@@ -162,6 +162,7 @@ const styles = StyleSheet.create({
         paddingRight: 40,
         fontSize: 17,
         paddingLeft: 15,
+        color: 'black'
     },
     viewBtn: {
         alignItems: 'center',

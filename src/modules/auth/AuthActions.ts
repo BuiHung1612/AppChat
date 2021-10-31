@@ -13,7 +13,6 @@ export const ACTION_TYPES = {
 };
 
 export const onSignIn = (username: any, password: any) => async (dispatch: Dispatch) => {
-    console.log('alo', username, password);
 
     axios.post(`${DevConfig}/users/login`, {
         username: username,
