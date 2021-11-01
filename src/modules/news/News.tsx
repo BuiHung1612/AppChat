@@ -29,16 +29,29 @@ interface News {
 
 const News = ({ navigation }: any) => {
     const [showReport, setShowReport] = useState(false)
-
+    const [renderScreen, setRenderScreen] = useState(false)
     const dispatch = useDispatch()
     const news = useSelector((store: any) => store.NewsReducer.news)
     const ProfileData = useSelector((store: any) => store.AuthReducer.profile)
+    const token = useSelector((store: any) => store.AuthReducer.token)
 
 
-    console.log('news', ProfileData);
+
+    const renderFatherScreen = (item: boolean) => {
+        setRenderScreen(item)
+    }
 
     useEffect(() => {
-        dispatch(getNews())
+        if (renderScreen == true) {
+            dispatch(getNews(token))
+        }
+
+        return () => {
+            setRenderScreen(false)
+        }
+    }, [renderScreen])
+    useEffect(() => {
+        dispatch(getNews(token))
     }, [])
 
     const onHandleClose = () => {
@@ -46,7 +59,7 @@ const News = ({ navigation }: any) => {
     }
     const RenderItemPost = ({ item }: any) => {
 
-        return item.user_id != ProfileData.user_id ? <RenderPost item={item} typeReport={'news'} /> : null
+        return item.user_id != ProfileData.user_id ? <RenderPost item={item} typeReport={'news'} renderFatherScreen={renderFatherScreen} /> : null
     }
     return (
         <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>

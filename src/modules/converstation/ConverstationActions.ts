@@ -41,7 +41,7 @@ export const addFriend = (userId: any, token: any) => async (dispatch: Dispatch)
 
     const headers = {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token.token}`
+        'Authorization': `Bearer ${token?.token}`
     }
     axios.post(`${DevConfig}/friends/addFriend`, {
         userId: userId

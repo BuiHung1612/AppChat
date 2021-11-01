@@ -8,7 +8,8 @@ export const ACTION_TYPES = {
     SET_IS_LOADING: 'profile/SET_IS_LOADING',
     SET_PROFILE: 'SET_PROFILE',
     SET_ERROR_MESSAGE: 'profile/SET_ERROR_MESSAGE',
-    SET_POSTS: 'profile/SET_POSTS'
+    SET_POSTS: 'profile/SET_POSTS',
+    SET_DELETE: 'profile/SET_DELETE'
 };
 
 export const getListPost = (token: any) => async (dispatch: Dispatch) => {
@@ -17,10 +18,7 @@ export const getListPost = (token: any) => async (dispatch: Dispatch) => {
         'Authorization': `Bearer ${token.token}`
     }
     axios.post(`${DevConfig}/users/posts/getListPost`, {
-
-
     }, { headers }).then((res: AxiosResponse<any>) => {
-        console.log('ket qua tra ve', res.data);
 
         if (res.data.length !== 0) {
             dispatch({
@@ -39,27 +37,41 @@ export const getListPost = (token: any) => async (dispatch: Dispatch) => {
             });
         }
     })
-    // else {
-    //     let dataState = getState().historyReducer.dataState;
-    //     if (dataState !== DataState.loaded) {
-    //         dataState = DataState.failed
-    //     }
-    //     dispatch({
-    //         type: ACTION_TYPES.SET_HISTORY,
-    //         payload: {
-    //             history: [],
-    //             canLoadMore: false,
-    //             dataState,
-    //             isLoading: false
-    //         },
-    //     });
-    //     dispatchErrorMessage("Lấy danh sách biểu mẫu thất bại. Xin vui lòng thử lại sau.", ACTION_TYPES.SET_ERROR_MESSAGE, dispatch);
-    // }
+};
 
 
+export const deletePost = (token: any, postId: string) => async (dispatch: Dispatch) => {
+    dispatch({
+        type: ACTION_TYPES.SET_IS_LOADING,
+        payload: {
+            isLoading: true
+        },
+    });
 
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token?.token}`
+    }
+    axios.post(`${DevConfig}/users/posts/delete`, {
+        postId: postId
+    }, { headers }).then((res: AxiosResponse<any>) => {
 
-    // } catch (error) {
-    //     dispatch({ type: ACTION_TYPES.SET_ERROR_MESSAGE });
-    // }
+        if (res.data.status == 200) {
+            dispatch({
+                type: ACTION_TYPES.SET_DELETE,
+                payload: {
+                    isDeleteSuccess: true,
+                    isLoading: false
+                },
+            });
+        }
+        else {
+            dispatch({
+                type: ACTION_TYPES.SET_ERROR_MESSAGE,
+                payload: {
+                    errorMessage: 'lấy dữ liệu thất bại'
+                },
+            });
+        }
+    })
 };

@@ -8,7 +8,7 @@ export const ACTION_TYPES = {
     SET_ISLOADING: 'news/SET_ISLOADING'
 };
 
-export const getNews = () => async (dispatch: Dispatch) => {
+export const getNews = (token: any) => async (dispatch: Dispatch) => {
 
     dispatch({
         type: ACTION_TYPES.SET_ISLOADING,
@@ -16,7 +16,12 @@ export const getNews = () => async (dispatch: Dispatch) => {
             isloading: true
         },
     });
-    axios.get(`${DevConfig}/users/posts/list`, {}).then((res: AxiosResponse<any>) => {
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token.token}`
+    }
+    axios.post(`${DevConfig}/users/posts/list`, {}, { headers }).then((res: AxiosResponse<any>) => {
+
 
         if (res.data.data) {
             dispatch({

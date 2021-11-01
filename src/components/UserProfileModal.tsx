@@ -29,22 +29,36 @@ interface UserProfile {
 
 const ModalProfile = ({ navigation, route }: any) => {
     const { data } = route.params
+    const [renderScreen, setRenderScreen] = useState(false)
     const listPost = useSelector((store: any) => store.UserProfileReducer.userPosts)
     const dispatch = useDispatch()
     // console.log('post', listPost);
 
+    const renderFatherScreen = (item: boolean) => {
+        setRenderScreen(item)
+    }
+
 
     const token = useSelector((store: any) => store.AuthReducer.token)
     useEffect(() => {
-        // const interval = setInterval(() => {
         dispatch(getFriendPost(data.user_id))
-        // }, 3000);
-        // return () => clearInterval(interval);
-
     }, [])
+
+
+    useEffect(() => {
+        if (renderScreen == true) {
+            dispatch(getFriendPost(data.user_id))
+        }
+
+        return () => {
+            setRenderScreen(false)
+        }
+    }, [renderScreen])
+
     const onHandleRefresh = () => {
         dispatch(getFriendPost(data.user_id))
     }
+
 
     const [isVisible, setIsVisible] = useState(false);
 
@@ -57,7 +71,7 @@ const ModalProfile = ({ navigation, route }: any) => {
 
     // cần định nghĩa lại type của item
     const RenderItemPost = ({ item }: any) => {
-        return <RenderPost item={item} />
+        return <RenderPost item={item} renderFatherScreen={renderFatherScreen} />
     }
 
     return (
@@ -86,6 +100,14 @@ const ModalProfile = ({ navigation, route }: any) => {
                     renderItem={RenderItemPost}
                     ListHeaderComponent={RenderHeader}
                     showsVerticalScrollIndicator={false}
+                    ListEmptyComponent={() => {
+                        return (
+                            <View style={{ alignItems: 'center', height: 200, justifyContent: 'flex-end' }}>
+                                <Image style={{ width: 120, borderRadius: 140, height: 120 }} source={{ uri: 'https://i.pinimg.com/originals/4e/cf/3a/4ecf3abb847d31947125838e9a6f4fc7.png' }} />
+                                <Text style={{ fontSize: 14, color: '#6E6E6E' }}>Không tìm thấy kết quả</Text>
+                            </View>
+                        )
+                    }}
                 />
             </View>
             <Report isVisible={isVisible}
@@ -96,7 +118,6 @@ const ModalProfile = ({ navigation, route }: any) => {
                 fourButton={true}
                 setVisible={onHandleClose}
                 userId={data.user_id}
-                token={token}
             />
         </View>
     );

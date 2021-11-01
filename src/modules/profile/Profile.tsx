@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
     ActivityIndicator,
     FlatList,
+    Image,
     Text,
     TouchableOpacity,
     View
@@ -25,16 +26,29 @@ const Profile = ({ navigation, route }: any) => {
     const ProfileData = useSelector((store: any) => store.AuthReducer.profile)
     const token = useSelector((store: any) => store.AuthReducer.token)
     const listPost = useSelector((store: any) => store.ProfileReducer.listPost)
-    console.log('list post:', listPost);
+    const [renderScreen, setRenderScreen] = useState(false)
+    console.log('listPost', listPost);
 
 
     useEffect(() => {
-        // const interval = setInterval(() => {
         dispatch(getListPost(token))
-        // }, 3000);
-        // return () => clearInterval(interval);
-
     }, [])
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            dispatch(getListPost(token))
+        }, 10000);
+        return () => clearInterval(interval);
+    }, [])
+    useEffect(() => {
+        if (renderScreen == true) {
+            dispatch(getListPost(token))
+        }
+
+        return () => {
+            setRenderScreen(false)
+        }
+    }, [renderScreen])
     const onHandleRefresh = () => {
         dispatch(getListPost(token))
     }
@@ -43,10 +57,13 @@ const Profile = ({ navigation, route }: any) => {
         return <ListHeader data={ProfileData} />
 
     }
+    const renderFatherScreen = () => {
+        setRenderScreen(true)
+    }
 
     // cần định nghĩa lại type của item
     const RenderItemPost = ({ item }: any) => {
-        return <RenderPost item={item} typeReport={'Profile'} />
+        return <RenderPost item={item} typeReport={'Profile'} renderFatherScreen={renderFatherScreen} />
     }
 
     const LogOut = () => {
@@ -91,8 +108,9 @@ const Profile = ({ navigation, route }: any) => {
                             onRefresh={onHandleRefresh}
                             ListEmptyComponent={() => {
                                 return (
-                                    <View>
-                                        <Text>empty</Text>
+                                    <View style={{ alignItems: 'center', height: 200, justifyContent: 'flex-end' }}>
+                                        <Image style={{ width: 120, borderRadius: 140, height: 120 }} source={{ uri: 'https://i.pinimg.com/originals/4e/cf/3a/4ecf3abb847d31947125838e9a6f4fc7.png' }} />
+                                        <Text style={{ fontSize: 14, color: '#6E6E6E' }}>Không tìm thấy kết quả</Text>
                                     </View>
                                 )
                             }}

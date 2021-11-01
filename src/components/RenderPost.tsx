@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Post, UserProfile } from '../shared/models/Profile';
@@ -8,18 +8,48 @@ import Report from './Report'
 import { useNavigation } from '@react-navigation/native';
 import TagAge from './TagAge';
 import { img_url } from '../shared/Constants';
+import { convertToTimeAgo, TIME_FORMATS } from '../utils/TimeUtil';
+import moment from 'moment';
+import { useDispatch, useSelector } from 'react-redux';
+import { likePostAction } from './UserProfileActions';
 interface Props {
     typeReport?: string,
     item: any,
+    renderFatherScreen: (isVisible: boolean) => void,
 }
-const RenderPost = ({ item, typeReport }: Props) => {
+const RenderPost = ({ item, typeReport, renderFatherScreen }: Props) => {
     const [showReport, setShowReport] = useState(false)
     const [showComment, setShowComment] = useState(false)
     const [like, setLike] = useState(false)
     const navigation = useNavigation()
+    const token = useSelector((store: any) => store.AuthReducer.token)
 
+    console.log('like', like);
+    const dispatch = useDispatch()
     const onCancelReport = () => {
         setShowReport(false)
+    }
+
+    // useEffect(() => {
+    //     if (like == true) {
+    //         dispatch(likePostAction(token, item.post_id, true))
+    //     }
+    //     else {
+    //         dispatch(likePostAction(token, item.post_id, false))
+    //     }
+    //     renderFatherScreen(true)
+
+    //     return () => {
+    //         renderFatherScreen(false)
+    //     }
+    // }, [like])
+
+    const onPressLike = () => {
+
+        dispatch(likePostAction(token, item.post_id))
+        renderFatherScreen(true)
+
+
     }
 
     return (
@@ -48,7 +78,7 @@ const RenderPost = ({ item, typeReport }: Props) => {
                         <Text
                             style={styles.createUpText}
                         >
-                            {new Date(item.create_up).toLocaleDateString()}
+                            {moment(item.create_up).format(TIME_FORMATS.DateTime)}
                         </Text>
                     </View>
                 </View>
@@ -72,11 +102,11 @@ const RenderPost = ({ item, typeReport }: Props) => {
                 ]}
             >
                 <View style={styles.flexrowAndAlign}>
-                    <TouchableOpacity onPress={() => setLike(!like)}>
+                    <TouchableOpacity onPress={() => onPressLike()}>
                         <Ionicons
                             name="heart"
                             size={24}
-                            color={like ? 'red' : '#DFDFDF'}
+                            color={item.isLiked ? 'red' : '#DFDFDF'}
                         />
                     </TouchableOpacity>
                     <Text style={{ marginLeft: 6 }}>{item.like_number}</Text>
@@ -101,7 +131,10 @@ const RenderPost = ({ item, typeReport }: Props) => {
                         button2="Xoá"
                         fourButton={false}
                         cancelLabel="Huỷ"
-                        setVisible={onCancelReport} />)
+                        setVisible={onCancelReport}
+                        canDelete={true}
+                        itemToDelete={item}
+                    />)
                     : (
                         <Report button1="Báo cáo"
                             cancelLabel="Hủy"

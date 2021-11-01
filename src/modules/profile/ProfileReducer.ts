@@ -8,14 +8,16 @@ const initialState: {
     dataProfile: null | UserProfile,
     canLoadMore: boolean,
     errorMessage: null | string,
-    listPost: any
+    listPost: any,
+    isDeleteSuccess: boolean
 } = {
     isInitializing: true,
     isLoading: false,
     dataProfile: null,
     errorMessage: null,
     canLoadMore: false,
-    listPost: null
+    listPost: null,
+    isDeleteSuccess: false
 };
 
 export type ProfileState = Readonly<typeof initialState>;
@@ -42,6 +44,13 @@ const ProfileReducer = (
             return {
                 ...state,
                 isLoading: action.payload.isLoading,
+            };
+
+        case ACTION_TYPES.SET_DELETE:
+            return {
+                ...state,
+                isLoading: action.payload.isLoading,
+                isDeleteSuccess: action.payload.isDeleteSuccess
             };
 
         case ACTION_TYPES.SET_POSTS:

@@ -1,8 +1,9 @@
 import React from 'react'
 import { Alert, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import { BottomSheet } from 'react-native-elements'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { addFriend } from '../modules/converstation/ConverstationActions'
+import { deletePost } from '../modules/profile/ProfileAction'
 import Colors from '../themes/Colors'
 import Fonts from '../themes/Fonts'
 
@@ -15,20 +16,38 @@ interface ReportButton {
     fourButton?: boolean,
     setVisible: (isVisible: boolean) => void,
     userId?: string,
-    token?: any
+    canDelete?: boolean,
+    itemToDelete?: any
 }
 
-const Report = ({ isVisible, button1, button2, button3, fourButton, cancelLabel, setVisible, userId, token }: ReportButton) => {
+const Report = ({ isVisible, button1, button2, button3, fourButton, cancelLabel, setVisible, userId, canDelete, itemToDelete }: ReportButton) => {
+    const token = useSelector((store: any) => store.AuthReducer.token)
 
-    const alertComming = () => {
-        Alert.alert("Thông báo", `Chức năng đang được phát triển. \nHãy chờ trong phiên bản cập nhật sắp tới!`, [
-            { text: "Tôi đã hiểu" }
-        ])
+    const alertComming = (post_id?: any) => {
+        if (canDelete == true) {
+            Alert.alert("Thông báo", `Bạn có chắc muốn xoá bài viết này không?`, [
+                { text: "Không" },
+                { text: "Tôi chắc chắn", onPress: () => dispatch(deletePost(token, post_id)) }
+            ])
+        }
+        else {
+            Alert.alert("Thông báo", `Chức năng đang được phát triển. \nHãy chờ trong phiên bản cập nhật sắp tới!`, [
+                { text: "Tôi đã hiểu" }
+            ])
+        }
+
     }
     const dispatch = useDispatch()
 
     const onPressAddFriend = () => {
-        dispatch(addFriend(userId, token))
+        if (canDelete == true) {
+            alertComming(itemToDelete.post_id)
+            setVisible(false)
+        }
+        else {
+            dispatch(addFriend(userId, token))
+            setVisible(false)
+        }
     }
     return (
         <BottomSheet

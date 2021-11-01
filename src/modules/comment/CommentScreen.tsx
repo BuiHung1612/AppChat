@@ -7,7 +7,7 @@ import Fonts from '../../themes/Fonts'
 
 const CommentScreen = ({ navigation, route }: any) => {
     const { DataComment } = route.params
-    // console.log('dataComment', DataComment);
+    console.log('dataComment', DataComment);
 
     const ListHeader = () => {
         return <View style={styles.renderPostView}>
@@ -16,18 +16,18 @@ const CommentScreen = ({ navigation, route }: any) => {
             >
                 <View style={[styles.flexrowAndAlign]}>
                     <TouchableOpacity >
-                        <Image source={DataComment?.userImage} style={styles.userImage} />
+                        <Image source={DataComment?.user_image} style={styles.userImage} />
                     </TouchableOpacity>
                     <View style={{ marginLeft: 10 }}>
                         <View style={{ flexDirection: 'row', }}>
-                            <Text>{DataComment?.userName}</Text>
+                            <Text>{DataComment?.user_name}</Text>
                             <TagAge sex={DataComment?.sex}
                                 age={DataComment?.age} />
                         </View>
                         <Text
                             style={styles.createUpText}
                         >
-                            {DataComment.createUp}
+                            {DataComment.create_up}
                         </Text>
                     </View>
                 </View>
@@ -36,9 +36,9 @@ const CommentScreen = ({ navigation, route }: any) => {
                 </TouchableOpacity>
             </View>
             <Text style={{ paddingVertical: 10 }}>{DataComment.subtitle}</Text>
-            {DataComment.image !== null ? (
+            {DataComment?.post_image !== null ? (
                 <Image
-                    source={{ uri: DataComment.image }}
+                    source={{ uri: DataComment?.post_image }}
                     style={styles.imagePost}
                 />
             ) : null}

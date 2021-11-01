@@ -58,9 +58,9 @@ const AddPost = ({ navigation }: any) => {
 
     const takeFromLib = () => {
         ImagePicker.openPicker({
-            width: 300,
-            height: 400,
-            cropping: true
+            compressImageMaxHeight: 1024,
+            compressImageMaxWidth: 1024
+
         }).then(image => {
             MultipleImage(image)
         });

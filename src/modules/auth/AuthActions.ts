@@ -40,7 +40,7 @@ export const onSignIn = (username: any, password: any) => async (dispatch: Dispa
 }
 
 export const createUser = (username: any, password: any, email: any, imgUrl: any) => async (dispatch: Dispatch) => {
-    console.log(username, password, email);
+
 
     axios.post(`${DevConfig}/users/register`, {
         userName: username,
@@ -49,7 +49,7 @@ export const createUser = (username: any, password: any, email: any, imgUrl: any
         imageUrl: imgUrl
 
     }).then((res: AxiosResponse<any>) => {
-        console.log('statuss', res.data.message);
+
         dispatch({
             type: ACTION_TYPES.SET_STATUS,
             payload: {
@@ -93,7 +93,7 @@ export const getImages = (userId: any) => async (dispatch: Dispatch) => {
 
 
 export const getProfileUser = (token: any) => async (dispatch: Dispatch) => {
-    console.log('token', token);
+
 
     const headers = {
         'Content-Type': 'application/json',
@@ -101,7 +101,7 @@ export const getProfileUser = (token: any) => async (dispatch: Dispatch) => {
     }
     axios.post(`${DevConfig}/users/profile`, {}, { headers: headers }
     ).then((res: AxiosResponse<any>) => {
-        console.log('ucmnr', res.data.user.user_id);
+
         //@ts-ignore
         dispatch({
             type: ACTION_TYPES.SET_PROFILE,

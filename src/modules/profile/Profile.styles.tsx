@@ -94,9 +94,9 @@ const styles = StyleSheet.create({
     },
     imagePost: {
         height: 300,
-        maxWidth: '60%',
+        maxWidth: '100%',
         borderRadius: 6,
-        resizeMode: 'contain'
+
     },
     createUpText: {
         color: '#DDDDDD',
