@@ -51,14 +51,22 @@ const TokenVerify = (req, res, next) => {
 }
 
 
-router.get("/list", function (req, res, next) {
+router.post("/list", TokenVerify, function (req, res, next) {
+    jwt.verify(req.token, 'secretKey', (err, authData) => {
+        if (err) {
+            res.sendStatus(403)
+        }
+        else {
+            let userId = authData.user.user.recordset[0].user_id
+            console.log('usser', userId);
+            sql.listPost(userId).then((result) => {
+                return res.json({ message: 'thành công', status: 200, error: null, data: result });
 
-    sql.listPost().then((result) => {
-        return res.json({ message: 'thành công', status: 200, error: null, data: result });
+            }).catch(err => res.json({ message: 'Không có kết quả trả về' }))
 
-    }).catch(err => res.json({ message: 'Không có kết quả trả về' }))
+        }
+    })
 });
-
 
 router.post("/getPostFromUserId", function (req, res, next) {
     let userId = req.body.userId
@@ -82,6 +90,54 @@ router.post("/getListPost", TokenVerify, function (req, res, next) {
                     list_Post: result,
 
                 })
+            })
+
+        }
+    })
+});
+
+
+
+router.post("/delete", TokenVerify, function (req, res, next) {
+    jwt.verify(req.token, 'secretKey', (err, authData) => {
+        if (err) {
+            res.sendStatus(403)
+        }
+        else {
+            let userId = authData.user.user.recordset[0].user_id
+            let postId = req.body.postId
+            sql.deletePost(userId, postId).then((result) => {
+
+                if (result == 'SUCCESS') {
+                    return res.json({ message: 'xoá bài đăng thành công', status: 200, error: null })
+                }
+                else {
+                    return res.json({ message: 'xoá bài đăng thất bại', status: 403, error: null })
+                }
+            })
+
+        }
+    })
+});
+
+
+router.post("/like", TokenVerify, function (req, res, next) {
+    jwt.verify(req.token, 'secretKey', (err, authData) => {
+        if (err) {
+            res.sendStatus(403)
+        }
+        else {
+            let userId = authData.user.user.recordset[0].user_id
+            let postId = req.body.postId
+            let isliked = req.body.isliked
+            sql.likePost(userId, postId, isliked).then((result) => {
+
+                if (result == 'SUCCESS') {
+                    return res.json({ message: 'thành công', status: 200, error: null })
+                }
+                else {
+                    return res.json({ message: 'thất bại', status: 403, error: null })
+                }
             })
 
         }
