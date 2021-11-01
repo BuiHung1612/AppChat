@@ -9,7 +9,7 @@ export const ACTION_TYPES = {
 };
 
 export const createPost = (token: any, postContent: string, imagePost: string) => async (dispatch: Dispatch) => {
-    console.log('token,postcontent', token, postContent);
+
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token.token}`

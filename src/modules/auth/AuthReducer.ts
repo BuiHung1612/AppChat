@@ -59,7 +59,6 @@ const AuthRecuder = (
 
             };
         case ACTION_TYPES.SET_STATUS:
-            console.log('action', action.payload);
 
             return {
                 ...state,

@@ -32,7 +32,6 @@ const ModalProfile = ({ navigation, route }: any) => {
     const [renderScreen, setRenderScreen] = useState(false)
     const listPost = useSelector((store: any) => store.UserProfileReducer.userPosts)
     const dispatch = useDispatch()
-    // console.log('post', listPost);
 
     const renderFatherScreen = (item: boolean) => {
         setRenderScreen(item)

@@ -22,7 +22,7 @@ const AddFriend = () => {
     const ListUserData = useSelector((store: any) => store.ConverstationReducer.listUser)
     const token = useSelector((store: any) => store.AuthReducer.token)
     const listRequestFriend = useSelector((store: any) => store.ConverstationReducer.listRequestFriend)
-    console.log('listRequestFriend', listRequestFriend);
+    console.log('[listRequestFriend] :', listRequestFriend);
 
     useEffect(() => {
         dispatch(getListRequestFriend(token))

@@ -47,8 +47,6 @@ export const addFriend = (userId: any, token: any) => async (dispatch: Dispatch)
         userId: userId
     }, { headers }).then((res: AxiosResponse<any>) => {
 
-        console.log(res.data);
-
         if (res.data.status == 200) {
             dispatch({
                 type: ACTION_TYPES.SET_MESSAGE_ADDFRIEND,
@@ -80,7 +78,7 @@ export const getListRequestFriend = (token: any) => async (dispatch: Dispatch) =
 
     }, { headers }).then((res: AxiosResponse<any>) => {
 
-        console.log('lời mời kết bạn ', res.data);
+        console.log('[lời mời kết bạn ] :', res.data);
 
         if (res.data.list_request) {
             dispatch({

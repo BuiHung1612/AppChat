@@ -61,7 +61,6 @@ const Converstation = ({ navigation }: any) => {
     const isLoading = useSelector((store: any) => store.ConverstationReducer.isLoading)
     const listFriend = useSelector((store: any) => store.ConverstationReducer.listFriend)
     const ProfileData = useSelector((store: any) => store.AuthReducer.profile)
-    console.log('isloading', isLoading);
 
     useEffect(() => {
         dispatch(getListFriend(token))

@@ -24,7 +24,6 @@ const RenderPost = ({ item, typeReport, renderFatherScreen }: Props) => {
     const navigation = useNavigation()
     const token = useSelector((store: any) => store.AuthReducer.token)
 
-    console.log('like', like);
     const dispatch = useDispatch()
     const onCancelReport = () => {
         setShowReport(false)
