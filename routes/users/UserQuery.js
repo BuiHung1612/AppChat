@@ -2,13 +2,6 @@ var config = require("../../dbconfig");
 const sql = require("mssql");
 const jwt = require("jsonwebtoken")
 var crypto = require("crypto");
-async function getdata() {
-    try {
-        console.log("sql server connected...");
-    } catch (error) {
-        console.log(" mathus-error :" + error);
-    }
-}
 
 
 async function getListUser() {
@@ -84,11 +77,10 @@ async function getImagefromUserId(userId) {
 
     try {
         let pool = await sql.connect(config)
-        let result = await pool.request().query(`select * from images where id_user='${userId}'`)
+        let result = await pool.request().query(`select * from users where user_id='${userId}'`)
 
         if (result.recordset[0] !== undefined) {
-            // console.log('result images', result.recordset);
-            return listImages = result.recordset
+            return result = result.recordset
 
         }
         else {
@@ -100,12 +92,24 @@ async function getImagefromUserId(userId) {
     }
 }
 
+async function updateProfile(userId, image) {
+
+    try {
+        let pool = await sql.connect(config)
+        await pool.request().query(`UPDATE users SET user_image='${image}' WHERE user_id='${userId}'`)
+        return 'UPDATE_SUCCESS'
+    }
+    catch (error) {
+        console.log(" mathus-error :" + error);
+    }
+}
+
 
 module.exports = {
-    getdata: getdata,
     getListUser: getListUser,
     Login: Login,
     createUser: createUser,
-    getImagefromUserId: getImagefromUserId
+    getImagefromUserId: getImagefromUserId,
+    updateProfile
 }
 

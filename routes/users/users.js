@@ -53,7 +53,7 @@ router.post('/register', function (req, res, next) {
   let email = req.body.email
   let passWord = req.body.passWord
   let imageUrl = req.body.imageUrl
-  console.log(userName, passWord, email, imageUrl);
+  // console.log(userName, passWord, email, imageUrl);
   sql.createUser(userName, passWord, email, imageUrl).then((data) => {
     if (data == 'CREATE_SUCCESS') {
       res.send({ isError: false, message: data })
@@ -87,14 +87,39 @@ router.post('/profile', verifyToken, (req, res, next) => {
       let userId = authData.user.user.recordset[0].user_id
 
       sql.getImagefromUserId(userId).then((result) => {
+        console.log('result', result);
         res.json({
           message: 'Thông tin Cá nhân',
-          user: authData.user.user.recordset[0],
+          user: result[0],
           // user: {
           //   profile: authData.user.user.recordset[0],
           //   images: result
           // }
         })
+      })
+
+    }
+  })
+})
+
+router.post('/update-Avatar', verifyToken, (req, res, next) => {
+  jwt.verify(req.token, 'secretKey', (err, authData) => {
+    if (err) {
+      res.sendStatus(403)
+    }
+    else {
+      let userId = authData.user.user.recordset[0].user_id
+      let image = req.body.image
+      console.log(image);
+      sql.updateProfile(userId, image).then((result) => {
+        if (result == 'UPDATE_SUCCESS') {
+          res.json({
+            message: 'Cập nhật ảnh đại diện thành công',
+            status: 200
+
+          })
+        }
+
       })
 
     }

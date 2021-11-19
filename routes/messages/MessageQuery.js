@@ -24,7 +24,7 @@ async function sendMessage(roomChat_id, id_message, createdAt, text, user, image
         let avatar = user.avatar
 
         let pool = await sql.connect(config);
-        await pool.request().query(`INSERT INTO chatRoom (id_room,id_messages,createAt,text,user_id,user_name,avatar,image) VALUES('${roomChat_id}','${id_message}','${createdAt}','${text}','${user_id}','${user_name}','${avatar}','${image}')`);
+        await pool.request().query(`INSERT INTO chatRoom (id_room,id_messages,createAt,text,user_id,user_name,avatar,image) VALUES('${roomChat_id}','${id_message}','${createdAt}',N'${text}','${user_id}',N'${user_name}','${avatar}','${image}')`);
         return 'CREATE_SUCCESS'
 
     } catch (error) {

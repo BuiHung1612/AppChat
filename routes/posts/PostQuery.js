@@ -15,10 +15,15 @@ async function listPost(userId) {
             age: listUser.recordset.find(a => a.user_id == e.user_id).age,
 
         }))
+
         let postDetail = await pool.request().query(`SELECT *  FROM postDetail`);
         let result = newarr.map(e => ({
-            ...e, isLiked: postDetail.recordset.find(a => a.user_id_like == userId && e.post_id == a.post_id)?.like_status == 'true' ? true : false
+            ...e, isLiked: postDetail.recordset.some(a => a.user_id_like == userId && e.post_id == a.post_id)
+
+            // ...e, isLiked: postDetail.recordset.find(a => a.user_id_like == userId && e.post_id == a.post_id)?.like_status == 'true' ? true : false
         }))
+
+
 
         let checkme = []
         checkme.push(result[0])
@@ -28,20 +33,21 @@ async function listPost(userId) {
             }
         }))
         // console.log('newarr', newarr);
-        return checkme;
+        return result;
     } catch (error) {
         console.log(" mathus-error :" + error);
     }
 }
 
-async function getPosts(userId) {
+async function getPosts(userId, currentUserId) {
     try {
         let pool = await sql.connect(config);
         let listPost = await pool.request().query(`SELECT *  FROM posts where user_id='${userId}' ORDER BY create_up DESC  `);
-        let postDetail = await pool.request().query(`SELECT *  FROM postDetail where user_id_like='${userId}'`);
+        let postDetail = await pool.request().query(`SELECT *  FROM postDetail where user_id_like='${currentUserId}'`);
         let newarr = listPost.recordset.map(e => ({
-            ...e, isLiked: postDetail.recordset.find(a => a.user_id_like == userId && e.post_id == a.post_id)?.like_status == 'true' ? true : false
+            ...e, isLiked: postDetail.recordset.some(a => a.user_id_like == currentUserId && e.post_id == a.post_id)
         }))
+        console.log('[newarr]');
 
         return newarr;
     } catch (error) {

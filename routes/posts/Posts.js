@@ -68,13 +68,31 @@ router.post("/list", TokenVerify, function (req, res, next) {
     })
 });
 
-router.post("/getPostFromUserId", function (req, res, next) {
-    let userId = req.body.userId
-    sql.getPosts(userId).then((result) => {
-        return res.json({ message: 'thành công', status: 200, error: null, data: result });
+router.post("/getPostFromUserId", TokenVerify, function (req, res, next) {
+    jwt.verify(req.token, 'secretKey', (err, authData) => {
+        if (err) {
+            res.sendStatus(403)
+        }
+        else {
+            let currentUserId = authData.user.user.recordset[0].user_id
+            let userId = req.body.userId
+            console.log('currentUserId', userId);
+            sql.getPosts(userId, currentUserId).then((result) => {
+                return res.json({ message: 'thành công', status: 200, error: null, data: result });
 
-    }).catch(err => res.json({ message: 'Không có của trả về' }))
+            }).catch(err => res.json({ message: 'Không có của trả về' }))
+
+        }
+    })
 });
+
+// router.post("/getPostFromUserId", function (req, res, next) {
+//     let userId = req.body.userId
+//     sql.getPosts(userId).then((result) => {
+//         return res.json({ message: 'thành công', status: 200, error: null, data: result });
+
+//     }).catch(err => res.json({ message: 'Không có của trả về' }))
+// });
 
 router.post("/getListPost", TokenVerify, function (req, res, next) {
     jwt.verify(req.token, 'secretKey', (err, authData) => {
@@ -82,8 +100,9 @@ router.post("/getListPost", TokenVerify, function (req, res, next) {
             res.sendStatus(403)
         }
         else {
-            let userId = authData.user.user.recordset[0].user_id
-            sql.getPosts(userId).then((result) => {
+            let currentUserId = authData.user.user.recordset[0].user_id
+            let userId = currentUserId
+            sql.getPosts(userId, currentUserId).then((result) => {
 
                 res.json({
                     message: 'Thông tin Cá nhân',
