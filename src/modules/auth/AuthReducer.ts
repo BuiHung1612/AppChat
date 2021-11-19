@@ -12,7 +12,8 @@ const initialState: {
     token: null | string,
     profile: UserProfile | null,
     status: string | null,
-    images: any
+    images: any,
+    isLoadingProfile: boolean
 } = {
     isInitializing: true,
     isLoading: false,
@@ -22,7 +23,8 @@ const initialState: {
     token: null,
     status: null,
     profile: null,
-    images: null
+    images: null,
+    isLoadingProfile: false
 };
 
 export type AuthState = Readonly<typeof initialState>;
@@ -71,6 +73,7 @@ const AuthRecuder = (
             return {
                 ...state,
                 profile: action.payload.profile,
+                isLoadingProfile: action.payload.isLoadingProfile
 
             };
 

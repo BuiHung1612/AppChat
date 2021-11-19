@@ -1,12 +1,13 @@
 import React from 'react'
 import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import { Input } from 'react-native-elements'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import TagAge from '../../components/TagAge'
 import Fonts from '../../themes/Fonts'
-
+import ListUser from '../home/ListUserData'
 const CommentScreen = ({ navigation, route }: any) => {
-    const { DataComment } = route.params
+    const { DataComment, userImage } = route.params
+    console.log('DataComment', DataComment);
+
 
     const ListHeader = () => {
         return <View style={styles.renderPostView}>
@@ -15,19 +16,19 @@ const CommentScreen = ({ navigation, route }: any) => {
             >
                 <View style={[styles.flexrowAndAlign]}>
                     <TouchableOpacity >
-                        <Image source={DataComment?.user_image} style={styles.userImage} />
+                        <Image source={{ uri: userImage }} style={styles.userImage} />
                     </TouchableOpacity>
                     <View style={{ marginLeft: 10 }}>
                         <View style={{ flexDirection: 'row', }}>
                             <Text>{DataComment?.user_name}</Text>
-                            <TagAge sex={DataComment?.sex}
-                                age={DataComment?.age} />
+                            <TagAge sex={0}
+                                age={21} />
                         </View>
-                        <Text
+                        {/* <Text
                             style={styles.createUpText}
                         >
                             {DataComment.create_up}
-                        </Text>
+                        </Text> */}
                     </View>
                 </View>
                 <TouchableOpacity >
@@ -108,7 +109,7 @@ const CommentScreen = ({ navigation, route }: any) => {
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
             <FlatList
-                data={DataComment.comments}
+                data={ListUser[0].posts[0].comments}
                 renderItem={renderItem}
                 ListHeaderComponent={ListHeader}
                 showsVerticalScrollIndicator={false}

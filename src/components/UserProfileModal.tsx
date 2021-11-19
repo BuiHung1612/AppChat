@@ -31,6 +31,7 @@ const ModalProfile = ({ navigation, route }: any) => {
     const { data } = route.params
     const [renderScreen, setRenderScreen] = useState(false)
     const listPost = useSelector((store: any) => store.UserProfileReducer.userPosts)
+
     const dispatch = useDispatch()
 
     const renderFatherScreen = (item: boolean) => {
@@ -40,13 +41,13 @@ const ModalProfile = ({ navigation, route }: any) => {
 
     const token = useSelector((store: any) => store.AuthReducer.token)
     useEffect(() => {
-        dispatch(getFriendPost(data.user_id))
+        dispatch(getFriendPost(data.user_id, token))
     }, [])
 
 
     useEffect(() => {
         if (renderScreen == true) {
-            dispatch(getFriendPost(data.user_id))
+            dispatch(getFriendPost(data.user_id, token))
         }
 
         return () => {
@@ -55,7 +56,7 @@ const ModalProfile = ({ navigation, route }: any) => {
     }, [renderScreen])
 
     const onHandleRefresh = () => {
-        dispatch(getFriendPost(data.user_id))
+        dispatch(getFriendPost(data.user_id, token))
     }
 
 

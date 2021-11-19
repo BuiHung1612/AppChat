@@ -18,6 +18,7 @@ const Home = ({ navigation }: any) => {
     const [selectUser, setSelectUser] = useState()
     const ListUser = useSelector((store: any) => store.ConverstationReducer.listUser)
     const ProfileData = useSelector((store: any) => store.AuthReducer.profile)
+    console.log('list ỦE', ListUser);
 
     useEffect(() => {
         dispatch(getListUser())
@@ -69,7 +70,7 @@ const Home = ({ navigation }: any) => {
 
                         />
                     </View>
-                    <Text style={styles.description}>Anh ấy là người mới</Text>
+                    <Text style={styles.description}>{item.sex == 0 ? 'Anh' : 'Cô'} ấy là người mới</Text>
                 </View>
             </TouchableOpacity >
         ) : null
@@ -92,13 +93,13 @@ const Home = ({ navigation }: any) => {
                     color={Colors.pink1}
                     image={Icon.chat}
                     title="Nhắn Tin"
-                    subtitle="23852 Trực tuyến"
+                    subtitle="8 Trực tuyến"
                 />
                 <HeaderBox
                     color={'#E3F2ED'}
                     image={Icon.phone}
                     title="Gọi Điện"
-                    subtitle="Còn lại 10 lần"
+                    subtitle="8 Trực tuyến"
                 />
                 <HeaderBox
                     color={Colors.pink1}
@@ -107,11 +108,12 @@ const Home = ({ navigation }: any) => {
                     subtitle="Chat nhóm"
                 />
             </View>
-            <View style={{ marginHorizontal: 16 }}>
+            <View style={{ marginHorizontal: 16, flex: 1 }}>
                 <FlatList
                     data={ListUser}
                     renderItem={itemBoxRender}
                     showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{ paddingBottom: 10 }}
                 />
             </View>
         </SafeAreaView>

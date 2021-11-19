@@ -9,7 +9,9 @@ export const ACTION_TYPES = {
     SET_STATUS: 'auth/STATUS',
     SET_PROFILE: 'auth/SET_PROFILE',
     SET_ERROR_MESSAGE: 'auth/SET_ERROR_MESSAGE',
-    SET_USER_IMAGE: 'auth/SET_USER_IMAGE'
+    SET_USER_IMAGE: 'auth/SET_USER_IMAGE',
+    UPDATE_AVATAR: 'auth/UPDATE_AVATAR',
+    LOADING_PROFILE: 'auth/LOADING_PROFILE'
 };
 
 export const onSignIn = (username: any, password: any) => async (dispatch: Dispatch) => {
@@ -94,6 +96,12 @@ export const getImages = (userId: any) => async (dispatch: Dispatch) => {
 
 export const getProfileUser = (token: any) => async (dispatch: Dispatch) => {
 
+    dispatch({
+        type: ACTION_TYPES.LOADING_PROFILE,
+        payload: {
+            isLoadingProfile: true
+        },
+    });
 
     const headers = {
         'Content-Type': 'application/json',
@@ -101,24 +109,66 @@ export const getProfileUser = (token: any) => async (dispatch: Dispatch) => {
     }
     axios.post(`${DevConfig}/users/profile`, {}, { headers: headers }
     ).then((res: AxiosResponse<any>) => {
-
         //@ts-ignore
+
+
         dispatch({
             type: ACTION_TYPES.SET_PROFILE,
             payload: {
-                profile: res.data.user
+                profile: res.data.user,
+                isLoadingProfile: false
             },
         });
 
 
     })
-    // dispatch({
-    //     type: ACTION_TYPES.SET_STATUS,
-    //     payload: {
-    //         status: null
-    //     }
-    // });
+
 }
+
+export const updateAvatar = (token: any, image: string) => async (dispatch: Dispatch) => {
+    dispatch({
+        type: ACTION_TYPES.SET_IS_LOADING,
+        payload: {
+            isLoading: true
+        },
+    });
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token?.token}`
+    }
+    axios.post(`${DevConfig}/users/update-Avatar`, {
+        image: image
+    }, { headers }).then((res: AxiosResponse<any>) => {
+
+
+        if (res.data.status == 200) {
+            //@ts-ignore
+
+
+            dispatch({
+                type: ACTION_TYPES.UPDATE_AVATAR,
+                payload: {
+                    isUpdateSuccess: true,
+                    isLoading: false
+                },
+            });
+
+            dispatch(getProfileUser(token))
+
+        }
+        else {
+            dispatch({
+                type: ACTION_TYPES.SET_ERROR_MESSAGE,
+                payload: {
+                    errorMessage: 'lấy dữ liệu thất bại'
+                },
+            });
+        }
+    })
+};
+
+
 
 
 // export const SaveUserLogin = () => async (dispatch: Dispatch) => {

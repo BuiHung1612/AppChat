@@ -17,7 +17,7 @@ import RenderPost from '../../components/RenderPost';
 import ListUser from '../home/ListUserData'
 import { useDispatch, useSelector } from 'react-redux';
 import { getListPost } from './ProfileAction';
-import { onSignOut } from '../auth/AuthActions';
+import { getProfileUser, onSignOut } from '../auth/AuthActions';
 const Profile = ({ navigation, route }: any) => {
 
     const [open, setOpen] = useState(false);
@@ -27,31 +27,35 @@ const Profile = ({ navigation, route }: any) => {
     const token = useSelector((store: any) => store.AuthReducer.token)
     const listPost = useSelector((store: any) => store.ProfileReducer.listPost)
     const [renderScreen, setRenderScreen] = useState(false)
-    console.log('listPost', listPost);
-
+    const reset = () => {
+        dispatch(getListPost(token))
+        dispatch(getProfileUser(token))
+    }
 
     useEffect(() => {
-        dispatch(getListPost(token))
+        reset()
     }, [])
 
     useEffect(() => {
         const interval = setInterval(() => {
-            dispatch(getListPost(token))
-        }, 10000);
+            reset()
+
+        }, 60000);
         return () => clearInterval(interval);
     }, [])
     useEffect(() => {
         if (renderScreen == true) {
-            dispatch(getListPost(token))
+            reset()
         }
-
         return () => {
             setRenderScreen(false)
         }
-    }, [renderScreen])
+    }, [renderScreen, navigation])
     const onHandleRefresh = () => {
-        dispatch(getListPost(token))
+        reset()
     }
+    // console.log('profileDAATA', ProfileData);
+
 
     const RenderHeader = () => {
         return <ListHeader data={ProfileData} />

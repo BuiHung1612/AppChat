@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, Dimensions, Alert,
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
 import Fonts from '../../themes/Fonts';
+import ImagePicker from 'react-native-image-crop-picker';
 import { ACTION_TYPES, createUser, setStatus } from './AuthActions';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -35,6 +36,15 @@ const Register = ({ navigation }: any) => {
         }
 
     }, [status])
+    const takeFromLib = () => {
+        ImagePicker.openPicker({
+            compressImageMaxHeight: 1024,
+            compressImageMaxWidth: 1024
+
+        }).then(image => {
+            // MultipleImage(image)
+        });
+    }
 
 
     return (
@@ -67,6 +77,7 @@ const Register = ({ navigation }: any) => {
                     placeholder="Nhập mật khẩu"
                     style={styles.TextInput}
                     value={password}
+                    secureTextEntry={false}
                     placeholderTextColor="gray"
                     onChangeText={text => setPassword(text)}
                 />
@@ -75,6 +86,7 @@ const Register = ({ navigation }: any) => {
                 <Ionicons name="image" size={22} color="#2E2EFE" />
                 <TextInput
                     placeholder="Nhập image url của ban"
+                    // onFocus={takeFromLib}
                     placeholderTextColor="gray"
                     style={styles.TextInput}
                     value={ImgUrl}

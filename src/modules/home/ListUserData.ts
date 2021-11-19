@@ -42,6 +42,25 @@ const ListUser = Array(10).fill('').map((e, i) => ({
                 age: Math.floor(Math.random() * 10) + 18,
                 content: 'Cái gì á'
 
+            },
+            {
+                id: 4,
+                userName: 'Minh Duk',
+                userImage: require('../../assets/images/img_user.jpg'),
+                createUp: new Date().toLocaleDateString(),
+                sex: i % 2 == 0 ? 0 : 1,
+                age: Math.floor(Math.random() * 10) + 18,
+                content: 'Hello world'
+            },
+            {
+                id: 5,
+                userName: 'Hảo hán',
+                userImage: require('../../assets/images/img_user.jpg'),
+                createUp: new Date().toLocaleDateString(),
+                sex: 1,
+                age: Math.floor(Math.random() * 10) + 18,
+                content: 'Cái gì á'
+
             }
         ],
         isLike: false

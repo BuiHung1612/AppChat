@@ -42,16 +42,26 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import rootReducer from './src/shared/redux/index';
+import { persistStore, persistReducer } from 'redux-persist';
+import { PersistGate } from 'redux-persist/es/integration/react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+const persistConfig = {
+  key: 'root',
+  storage: AsyncStorage,
+};
 
 
-
-
-let store = createStore(rootReducer, applyMiddleware(thunk));
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+let store = createStore(persistedReducer, applyMiddleware(thunk));
+let persistor = persistStore(store);
+// let store = createStore(rootReducer, applyMiddleware(thunk));
 
 const App = () => {
   return (
     <Provider store={store}>
-      <AppNavigator />
+      <PersistGate loading={null} persistor={persistor}>
+        <AppNavigator />
+      </PersistGate>
     </Provider>
   );
 };

@@ -8,7 +8,8 @@ export const ACTION_TYPES = {
     SET_ISLOADING: 'userProfilePost/SET_ISLOADING'
 };
 
-export const getFriendPost = (userId: string) => async (dispatch: Dispatch) => {
+export const getFriendPost = (userId: string, token: any) => async (dispatch: Dispatch) => {
+    console.log('userId', userId, token);
 
     dispatch({
         type: ACTION_TYPES.SET_ISLOADING,
@@ -18,7 +19,7 @@ export const getFriendPost = (userId: string) => async (dispatch: Dispatch) => {
     });
     const headers = {
         'Content-Type': 'application/json',
-        // 'Authorization': `Bearer ${token.token}`
+        'Authorization': `Bearer ${token.token}`
     }
     axios.post(`${DevConfig}/users/posts/getPostFromUserId`, {
 

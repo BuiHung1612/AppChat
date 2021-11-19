@@ -75,3 +75,5 @@ export const deletePost = (token: any, postId: string) => async (dispatch: Dispa
         }
     })
 };
+
+

@@ -50,6 +50,8 @@ const RenderPost = ({ item, typeReport, renderFatherScreen }: Props) => {
 
 
     }
+    console.log('item :', item);
+
 
     return (
         <View style={{ maxWidth: '100%', marginTop: 10, }}>
@@ -112,7 +114,7 @@ const RenderPost = ({ item, typeReport, renderFatherScreen }: Props) => {
                 </View>
 
                 <View style={[styles.flexrowAndAlign, { marginLeft: 24 }]}>
-                    <TouchableOpacity onPress={() => navigation.navigate('Comment', { DataComment: item })} >
+                    <TouchableOpacity onPress={() => navigation.navigate('Comment', { DataComment: item, userImage: img_url })} >
                         <Ionicons
                             name="chatbubble"
                             size={24}
